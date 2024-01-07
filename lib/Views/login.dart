@@ -1,4 +1,3 @@
-import '../Resources/Components/applogo.dart';
 import '../Resources/Components/button.dart';
 import '../Resources/Components/text_fields.dart';
 import '../Resources/Components/texts.dart';
@@ -22,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kWhiteColor,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -35,8 +35,17 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Spacer(),
-                const AppLogo(
-                  size: Size(120, 120),
+                Container(
+                  width: 180,
+                  height: 180,
+                  padding: EdgeInsets.zero,
+                  child: ClipRRect(
+                    // borderRadius: BorderRadius.circular(1000),
+                    child: Image.asset(
+                      "Assets/Images/text_logo.png",
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,

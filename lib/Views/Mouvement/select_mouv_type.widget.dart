@@ -1,5 +1,4 @@
 import '../../Resources/Components/button.dart';
-import '../../Resources/Components/searchable_textfield.dart';
 import '../../Resources/Components/texts.dart';
 import '../../Resources/Constants/enums.dart';
 import '../../Resources/Constants/global_variables.dart';
@@ -57,37 +56,77 @@ class _SelectMouvementTypeWidgetState extends State<SelectMouvementTypeWidget> {
                 height: 300,
               ),
             ),
+            TextWidgets.text500(
+                maxLines: 5,
+                align: TextAlign.center,
+                title: 'Sélectionnez un dépôt de destination',
+                fontSize: 18,
+                textColor: AppColors.kBlackColor),
             const SizedBox(
               height: 8,
             ),
-            SearchableTextFormFieldWidget(
-              data: context
-                  .read<MouvementProvider>()
-                  .offlineStoreData
-                  .map((e) => e.toJSON())
-                  .toList(),
-              displayColumn: 'designation',
-              indexColumn: 'id',
-              editCtrller: _destinationCtrller,
-              inputType: TextInputType.text,
-              maxLines: 1,
-              hintText: 'Destination (*)',
-              textColor: AppColors.kBlackColor,
-              backColor: AppColors.kTextFormBackColor,
-              callback: (data) {
-                destinationStore = StoreModel.fromJSON(data);
-                setState(() {});
-              },
+            // SearchableTextFormFieldWidget(
+            //   data: context
+            //       .read<MouvementProvider>()
+            //       .offlineStoreData
+            //       .map((e) => e.toJSON())
+            //       .toList(),
+            //   displayColumn: 'designation',
+            //   indexColumn: 'id',
+            //   editCtrller: _destinationCtrller,
+            //   inputType: TextInputType.text,
+            //   maxLines: 1,
+            //   hintText: 'Destination (*)',
+            //   textColor: AppColors.kBlackColor,
+            //   backColor: AppColors.kTextFormBackColor,
+            //   callback: (data) {
+            //     destinationStore = StoreModel.fromJSON(data);
+            //     setState(() {});
+            //   },
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  ...List.generate(
+                      context.read<MouvementProvider>().offlineStoreData.length,
+                      (index) {
+                    StoreModel store = context
+                        .read<MouvementProvider>()
+                        .offlineStoreData[index];
+                    return ActionChip(
+                        onPressed: () {
+                          destination = store.id?.toString();
+                          destinationStore = store;
+                          setState(() {});
+                        },
+                        avatar: TextWidgets.textBold(
+                            title: store.name.substring(0, 1).toUpperCase(),
+                            fontSize: 18,
+                            textColor: destinationStore?.id == store.id
+                                ? AppColors.kWhiteColor
+                                : AppColors.kBlackColor),
+                        backgroundColor: destinationStore?.id == store.id
+                            ? AppColors.kPrimaryColor
+                            : AppColors.kWhiteColor,
+                        elevation: 0,
+                        label: TextWidgets.text300(
+                          title: store.name,
+                          fontSize: 12,
+                          textColor: destinationStore?.id == store.id
+                              ? AppColors.kWhiteColor
+                              : AppColors.kBlackColor,
+                        ));
+                  })
+                ],
+              ),
             ),
             const SizedBox(
               height: 16,
             ),
-            TextWidgets.text500(
-                maxLines: 5,
-                align: TextAlign.center,
-                title: 'Spécifiez un dépôt de destination',
-                fontSize: 18,
-                textColor: AppColors.kBlackColor),
+
             // const Spacer(),
             Padding(
               padding: const EdgeInsets.all(8.0),

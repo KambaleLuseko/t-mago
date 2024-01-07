@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:t_mago/Views/Mouvement/widgets/product_details.widget.dart';
+
 import '../../Resources/Components/button.dart';
 import '../../Resources/Components/dialogs.dart';
-import '../../Resources/Components/searchable_textfield.dart';
-import '../../Resources/Components/text_fields.dart';
 import '../../Resources/Components/texts.dart';
 import '../../Resources/Constants/enums.dart';
 import '../../Resources/Constants/global_variables.dart';
@@ -71,8 +71,7 @@ class _MouvementDetailsWidgetState extends State<MouvementDetailsWidget> {
                     value: context
                             .select<MouvementProvider, MouvementModel>(
                                 (provider) => provider.newMouvement)
-                            .sender
-                            ?.fullname ??
+                            .senderName ??
                         ''),
                 TextWidgets.textHorizontalWithLabel(
                     title: 'Destinataire',
@@ -106,137 +105,15 @@ class _MouvementDetailsWidgetState extends State<MouvementDetailsWidget> {
         if (widget.data == null || widget.data!.isEmpty)
           ListTile(
             onTap: () {
-              TextEditingController _productCtrller = TextEditingController(),
-                  _storeTypeCtrller = TextEditingController(),
-                  _weightCtrller = TextEditingController(),
-                  _storageWeightCtrller = TextEditingController(),
-                  _priceCtrller = TextEditingController(),
-                  _humidityCtrller = TextEditingController();
-              String? price, humidityValue;
-
-              Dialogs.showDialogWithActionCustomContent(
-                  title: 'Nouveau produit',
-                  content: Column(
-                    children: [
-                      // TextFormFieldWidget(
-                      //     editCtrller: _productCtrller,
-                      //     inputType: TextInputType.text,
-                      //     maxLines: 1,
-                      //     hintText: 'Produit (*)',
-                      //     textColor: AppColors.kBlackColor,
-                      //     backColor: AppColors.kTextFormBackColor),
-                      TextFormFieldWidget(
-                          editCtrller: _storeTypeCtrller,
-                          inputType: TextInputType.text,
-                          maxLines: 1,
-                          hintText: 'Entreposage (*)',
-                          textColor: AppColors.kBlackColor,
-                          backColor: AppColors.kTextFormBackColor),
-                      // SearchableTextFormFieldWidget(
-                      //   data: context
-                      //       .read<HumidityPricesProvider>()
-                      //       .offlineHumidity
-                      //       .map((e) => e)
-                      //       .toList(),
-                      //   displayColumn: 'designation',
-                      //   secondDisplayColumn: 'decote_total',
-                      //   indexColumn: 'decote_total',
-                      //   editCtrller: _humidityCtrller,
-                      //   inputType: TextInputType.text,
-                      //   maxLines: 1,
-                      //   hintText: 'Humidité (*)',
-                      //   textColor: AppColors.kBlackColor,
-                      //   backColor: AppColors.kTextFormBackColor,
-                      //   callback: (data) {
-                      //     humidityValue = data.toString();
-                      //     setState(() {});
-                      //   },
-                      // ),
-                      SearchableTextFormFieldWidget(
-                        data: context
-                            .read<MouvementProvider>()
-                            .offlinePricesData
-                            .map((e) => e.toJSON())
-                            .toList(),
-                        displayColumn: 'prix_kg',
-                        secondDisplayColumn: 'design_device',
-                        indexColumn: 'prix_kg',
-                        editCtrller: _priceCtrller,
-                        inputType: TextInputType.text,
-                        maxLines: 1,
-                        hintText: 'Prix par kg (*)',
-                        textColor: AppColors.kBlackColor,
-                        backColor: AppColors.kTextFormBackColor,
-                        callback: (data) {
-                          if (data == null) return;
-                          price = data['prix_kg'].toString();
-                          setState(() {});
-                        },
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormFieldWidget(
-                                editCtrller: _weightCtrller,
-                                inputType: TextInputType.number,
-                                maxLines: 1,
-                                hintText: 'Poids en kg (*)',
-                                textColor: AppColors.kBlackColor,
-                                backColor: AppColors.kTextFormBackColor),
-                          ),
-                        ],
-                      ),
-                      // TextFormFieldWidget(
-                      //     editCtrller: _storageWeightCtrller,
-                      //     inputType: TextInputType.number,
-                      //     maxLines: 1,
-                      //     hintText: 'Poids emballage (*)',
-                      //     textColor: AppColors.kBlackColor,
-                      //     backColor: AppColors.kTextFormBackColor),
-                    ],
-                  ),
-                  callback: () {
-                    if (_weightCtrller.text.isEmpty ||
-                        price == null ||
-                        _storeTypeCtrller.text.isEmpty) {
-                      ToastNotification.showToast(
-                          msg: "Veuillez remplir tous les champs",
-                          msgType: MessageType.error,
-                          title: 'Error');
-                      return;
-                    }
-
-                    // if (_storageWeightCtrller.text.isEmpty ||
-                    //     double.tryParse(_storageWeightCtrller.text.trim()) ==
-                    //         null ||
-                    //     _weightCtrller.text.isEmpty ||
-                    //     double.tryParse(_weightCtrller.text.trim()) == null) {
-                    //   ToastNotification.showToast(
-                    //       msg: "Les poids sont incorrects",
-                    //       msgType: MessageType.error,
-                    //       title: 'Error');
-                    //   return;
-                    // }
-                    data.add(MouvementDetailsModel.fromJSON({
-                      "product": "Colis",
-                      "kg": _weightCtrller.text.trim(),
-                      "entreposage": _storeTypeCtrller.text.trim(),
-                      "prix_kg": price!,
-                      "total_kg": ((double.tryParse(price ?? '0') ?? 0) *
-                              (double.tryParse(_weightCtrller.text.trim()) ??
-                                  0))
-                          .toStringAsFixed(4),
-                      "decote_humidite":
-                          (double.tryParse(humidityValue ?? '') ?? 0),
-                      "kg_sac": '0',
-                      "prix_net": price!,
-                      "total_kg_net":
-                          ((double.parse(_weightCtrller.text.trim())) *
-                                  (double.parse(price!)))
-                              .toStringAsFixed(4),
-                    }));
+              Dialogs.showChoiceDialog(
+                title: 'Nouveau produit',
+                content: ProductDetailsWidget(
+                  callback: (item) {
+                    data.add(item);
                     setState(() {});
-                  });
+                  },
+                ),
+              );
             },
             leading: CircleAvatar(
               backgroundColor: AppColors.kTextFormBackColor,
@@ -298,71 +175,12 @@ class _MouvementDetailsWidgetState extends State<MouvementDetailsWidget> {
                                     // ),
                                     TextWidgets.textBold(
                                         title:
-                                            "${double.parse(data[index].totalNetWeight ?? '0')} USD",
+                                            "${double.parse(data[index].netPrice ?? '0')} USD",
                                         fontSize: 14,
                                         textColor: AppColors.kBlackColor),
                                   ],
                                 ),
                               ),
-                              // ListTile(
-                              //   leading: CircleAvatar(
-                              //     backgroundColor: AppColors.kTransparentColor,
-                              //     child: Container(),
-                              //   ),
-                              //   title: Wrap(
-                              //     children: [
-                              //       // TextWidgets.textWithLabel(
-                              //       //     title: 'Humidite',
-                              //       //     value:
-                              //       //         "-${data[index].decoteHumidite ?? '0'} USD",
-                              //       //     fontSize: 12,
-                              //       //     textColor: AppColors.kBlackColor),
-                              //       // TextWidgets.textWithLabel(
-                              //       //     title: 'Poids emballage',
-                              //       //     value: data[index].storageWeight ?? '',
-                              //       //     fontSize: 12,
-                              //       //     textColor: AppColors.kBlackColor),
-                              //       TextWidgets.textWithLabel(
-                              //           title: 'Poids net',
-                              //           value:
-                              //               "${double.parse(data[index].weights) - double.parse(data[index].storageWeight ?? '0')} kg",
-                              //           fontSize: 12,
-                              //           textColor: AppColors.kBlackColor),
-                              //       TextWidgets.textWithLabel(
-                              //           title: 'Prix net/kg',
-                              //           value: "${data[index].netPrice} USD",
-                              //           fontSize: 12,
-                              //           textColor: AppColors.kBlackColor),
-                              //       TextWidgets.textWithLabel(
-                              //           title: 'Prix total net a payer',
-                              //           value:
-                              //               "${double.parse(data[index].totalNetWeight ?? '0')} USD",
-                              //           fontSize: 12,
-                              //           textColor: AppColors.kRedColor),
-                              //     ],
-                              //   ),
-                              //   // trailing: Column(
-                              //   //   children: [
-                              //   //     TextWidgets.textWithLabel(
-                              //   //         title: 'Poids net',
-                              //   //         value: "${data[index].totalNetWeight} kg",
-                              //   //         fontSize: 14,
-                              //   //         textColor: AppColors.kBlackColor),
-                              //   //     TextWidgets.textWithLabel(
-                              //   //         title: 'Prix net/kg',
-                              //   //         value: "${data[index].totalNetWeight} kg",
-                              //   //         fontSize: 14,
-                              //   //         textColor: AppColors.kBlackColor),
-                              //   //     // const SizedBox(
-                              //   //     //   height: 8,
-                              //   //     // ),
-                              //   //     // TextWidgets.textBold(
-                              //   //     //     title: "${data[index].netPrice} USD",
-                              //   //     //     fontSize: 14,
-                              //   //     //     textColor: AppColors.kBlackColor),
-                              //   //   ],
-                              //   // ),
-                              // ),
                             ],
                           ),
                         )),

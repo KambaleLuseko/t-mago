@@ -107,14 +107,17 @@ class Save
             $ref_mouv_entry  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['ref_mouv_entry']));
             $destination  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['destination']));
             $receiver_name  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['receiver_name']));
-            $receiver_phone  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['receiver_phone']));
+            $receiver_phone  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['receiver_phone'])) ?? '';
+            $sender_name  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['senderName']));
+            $sender_phone  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['senderTel'])) ?? '';
             $ref_mouv_entry = !isset($ref_mouv_entry) ? null : $ref_mouv_entry;
 
             $detailsMvt = json_decode($_POST['detailsMouvement']); // trim(mysqli_real_escape_string(Constants::connect(), $_POST['surface_ch']));
             if (!isset($uuid)) {
                 $uuid = rand(10000, 1000000) . date('YmdHis');
             }
-            if ($detailsMvt == '' || $senderID == "" || $uuid == "") {
+            $trackUUID = rand(100000, 1000000) . date('YmdHis');
+            if ($detailsMvt == '' || $sender_name == "" || $receiver_name == "") {
                 $msg["state"] = "error";
                 $msg["content"] = "Donnees invalides";
             } else {
@@ -123,8 +126,10 @@ class Save
                     //     $realImage = base64_decode($image);
                     //     file_put_contents($uuid . '.png', $realImage);
                     // }
-                    $req = "INSERT INTO `mouvement` (`uuid`, `type_mvt`,`senderID`, `ref_depot`, `ref_mouv_entry`, `ref_user`, `destination`,`receiver_name`,`receiver_phone`) VALUES ('$uuid', '$type_mvt', '$senderID', '$ref_depot', '$ref_mouv_entry', '$ref_user', '$destination', '$receiver_name', '$receiver_phone')";
+                    $req = "INSERT INTO `mouvement` (`uuid`, `type_mvt`,`senderID`, `ref_depot`, `ref_mouv_entry`, `ref_user`, `destination`,`receiver_name`,`receiver_phone`,`sender_name`,`sender_phone`) VALUES ('$uuid', '$type_mvt', '$senderID', '$ref_depot', '$ref_mouv_entry', '$ref_user', '$destination', '$receiver_name', '$receiver_phone', '$sender_name', '$sender_phone')";
                     $res = mysqli_query(Constants::connect(), $req);
+                    $reqTrack = "INSERT INTO `mouvement_tracking` (`uuid`, `mouv_uuid`,`user_id`, `source_depot_id`,`dest_depot_id`,`label`) VALUES ('$trackUUID', '$uuid', '$ref_user', '$ref_depot', '$destination', 'Colis reçu')";
+                    mysqli_query(Constants::connect(), $reqTrack);
                     if ($res) {
                         for ($i = 0; $i < count($detailsMvt); $i++) {
                             $product = $detailsMvt[$i]->product;

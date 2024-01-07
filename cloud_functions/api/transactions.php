@@ -44,7 +44,7 @@ if ($_POST['transaction'] == 'getmouvement') {
             $tracking = array();
             $id = $row['uuid'];
             $senderID = $row['senderID'];
-            $receiverID = $row['receiverID'];
+            // $receiverID = $row['receiverID'];
             $outStockUUID = $row['ref_mouv_entry'];
             $detQuery = "SELECT * from `detail_mvt` where mouvement_uuid='$id'";
             $detResult = Constants::connect()->query($detQuery);
@@ -74,23 +74,11 @@ if ($_POST['transaction'] == 'getmouvement') {
             //     array_push($outStockData, $outRow);
             // }
             array_push($mainData, [
-                'id' => $row['id'],
-                'uuid' => $row['uuid'],
-                'type_mvt' => $row['type_mvt'],
-                'storeName' => $row['storeName'],
+                ...$row,
+                'senderName' => $row['sender_name'],
+                'senderTel' => $row['sender_phone'],
+
                 'sender' => $sender[0] ?? null,
-                // 'receiver' => $receiver[0] ?? null,
-                // 'senderName' => $row['senderName'],
-                // 'senderTel' => $row['senderTel'],
-                'receiver_name' => $row['receiver_name'],
-                'receiver_phone' => $row['receiver_phone'],
-                'syncStatus' => $row['syncStatus'],
-                'senderID' => $row['senderID'],
-                'ref_depot' => $row['ref_depot'],
-                'ref_user' => $row['ref_user'],
-                'destination' => $row['destination'],
-                'syncStatus' => $row['syncStatus'],
-                'created_at' => $row['created_at'],
                 'outStock' => $outStockData,
                 'detailsMouvement' => $details,
                 'tracking' => $tracking,
@@ -138,32 +126,12 @@ if ($_POST['transaction'] == 'searchmouvement') {
             while ($detailRow = $trackResult->fetch_assoc()) {
                 array_push($tracking, $detailRow);
             }
-
-            // $outStock = "SELECT mouvement.*, depot.designation storeName FROM `mouvement` LEFT JOIN depot ON depot.id=mouvement.ref_depot WHERE mouvement.uuid='$outStockUUID'";
-            // $outResult = Constants::connect()->query($outStock);
-            // // print_r(json_encode($subQuery));
-            // while ($outRow = $outResult->fetch_assoc()) {
-            //     // print_r(json_encode($subRow));
-            //     array_push($outStockData, $outRow);
-            // }
             array_push($mainData, [
-                'id' => $row['id'],
-                'uuid' => $row['uuid'],
-                'type_mvt' => $row['type_mvt'],
-                'storeName' => $row['storeName'],
+                ...$row,
+                'senderName' => $row['sender_name'],
+                'senderTel' => $row['sender_phone'],
+
                 'sender' => $sender[0] ?? null,
-                // 'receiver' => $receiver[0] ?? null,
-                // 'senderName' => $row['senderName'],
-                // 'senderTel' => $row['senderTel'],
-                'receiver_name' => $row['receiver_name'],
-                'receiver_phone' => $row['receiver_phone'],
-                'syncStatus' => $row['syncStatus'],
-                'senderID' => $row['senderID'],
-                'ref_depot' => $row['ref_depot'],
-                'ref_user' => $row['ref_user'],
-                'destination' => $row['destination'],
-                'syncStatus' => $row['syncStatus'],
-                'created_at' => $row['created_at'],
                 'outStock' => $outStockData,
                 'detailsMouvement' => $details,
                 'tracking' => $tracking,

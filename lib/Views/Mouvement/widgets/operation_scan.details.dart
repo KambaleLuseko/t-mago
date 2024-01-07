@@ -33,8 +33,7 @@ class _SaveSalePageState extends State<OperationScanPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      paymentMode = paymentModeList.first;
-      setState(() {});
+      context.read<MouvementProvider>().resetOperation();
     });
   }
 
@@ -126,8 +125,8 @@ class _SaveSalePageState extends State<OperationScanPage> {
                               children: [
                                   ListItem(
                                     icon: Icons.person,
-                                    title: data.sender?.fullname ?? '',
-                                    subtitle: data.sender?.tel ?? '',
+                                    title: data.senderName ?? '',
+                                    subtitle: data.senderTel ?? '',
                                     middleFields: ListItemModel(
                                         displayLabel: true,
                                         title: 'Exp',
@@ -183,7 +182,7 @@ class _SaveSalePageState extends State<OperationScanPage> {
                                               textColor: AppColors.kGreenColor,
                                               value: data.detailsMouvement
                                                       .map((e) => double.parse(
-                                                          e.totalNetWeight!))
+                                                          e.netPrice!))
                                                       .fold(
                                                           0.0,
                                                           (prev, element) =>
@@ -239,6 +238,12 @@ class _SaveSalePageState extends State<OperationScanPage> {
                                             title: Wrap(
                                               children: [
                                                 TextWidgets.textWithLabel(
+                                                    title: 'Description',
+                                                    value: detData.product,
+                                                    fontSize: 12,
+                                                    textColor:
+                                                        AppColors.kBlackColor),
+                                                TextWidgets.textWithLabel(
                                                     title: 'Poids',
                                                     value:
                                                         "${detData.weights}kg",
@@ -246,17 +251,10 @@ class _SaveSalePageState extends State<OperationScanPage> {
                                                     textColor:
                                                         AppColors.kBlackColor),
                                                 TextWidgets.textWithLabel(
-                                                    title: 'Prix par kg',
-                                                    value:
-                                                        "${double.parse(detData.priceID)} USD",
-                                                    fontSize: 12,
-                                                    textColor:
-                                                        AppColors.kBlackColor),
-                                                TextWidgets.textWithLabel(
                                                     title:
                                                         'Prix total net a payer',
                                                     value:
-                                                        "${double.parse(detData.totalNetWeight ?? '0').toStringAsFixed(4)} USD",
+                                                        "${double.parse(detData.netPrice ?? '0').toStringAsFixed(4)} USD",
                                                     fontSize: 12,
                                                     textColor:
                                                         AppColors.kRedColor),

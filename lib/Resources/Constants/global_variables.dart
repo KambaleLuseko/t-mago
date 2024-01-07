@@ -40,7 +40,7 @@ class AppColors {
 class BaseUrl {
   // static String ip = "https://biakuuza.com/api";
   // static String ip = "https://mck-coop-ca.com/api/api";
-  // static String ip = "http://192.168.188.22:8000";
+  // static String ip = "http://192.168.241.22:8000";
   static String ip = "http://192.168.2.125:8000";
   static String apiUrl = ip;
   static String getLogin = '$apiUrl/user/login/';
@@ -58,6 +58,13 @@ class ToastNotification {
       String? title = "Information",
       Alignment? align = Alignment.topCenter,
       MessageType? msgType = MessageType.warning}) {
+    Color backColor = msgType == MessageType.info
+        ? AppColors.kBlueColor
+        : msgType == MessageType.error
+            ? AppColors.kRedColor
+            : msgType == MessageType.success
+                ? AppColors.kGreenColor
+                : AppColors.kWarningColor;
     ScaffoldMessenger.of(navKey.currentContext!).removeCurrentSnackBar();
     ScaffoldMessenger.of(navKey.currentContext!).showSnackBar(
       SnackBar(
@@ -78,11 +85,11 @@ class ToastNotification {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: backColor,
         content: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: AppColors.kWhiteColor,
+              color: backColor,
               // msgType == MessageType.error
               //     ? AppColors.kRedColor.withOpacity(0.1)
               //     : msgType == MessageType.success
@@ -111,13 +118,7 @@ class ToastNotification {
                             : msgType == MessageType.success
                                 ? Icons.check_circle
                                 : Icons.warning_amber_rounded,
-                    color: msgType == MessageType.info
-                        ? AppColors.kBlueColor
-                        : msgType == MessageType.error
-                            ? AppColors.kRedColor
-                            : msgType == MessageType.success
-                                ? AppColors.kGreenColor
-                                : AppColors.kWarningColor,
+                    color: backColor,
                     size: 30,
                   ),
                 ),
@@ -130,110 +131,11 @@ class ToastNotification {
                         TextWidgets.textBold(
                             title: title!,
                             fontSize: 14,
-                            textColor: msgType == MessageType.info
-                                ? AppColors.kBlueColor
-                                : msgType == MessageType.error
-                                    ? AppColors.kRedColor
-                                    : msgType == MessageType.success
-                                        ? AppColors.kGreenColor
-                                        : AppColors.kWarningColor),
+                            textColor: AppColors.kWhiteColor),
                         TextWidgets.textNormal(
                             title: msg,
                             fontSize: 12,
-                            textColor: msgType == MessageType.info
-                                ? AppColors.kBlueColor
-                                : msgType == MessageType.error
-                                    ? AppColors.kRedColor
-                                    : msgType == MessageType.success
-                                        ? AppColors.kGreenColor
-                                        : AppColors.kWarningColor),
-                      ]),
-                ),
-              ],
-            )),
-      ),
-    );
-  }
-
-  static showContextToast(
-      {required String msg,
-      required BuildContext context,
-      String? title = "Information",
-      MessageType? msgType = MessageType.warning}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        margin: Responsive.isWeb(navKey.currentContext!)
-            ? EdgeInsets.only(
-                left: MediaQuery.of(navKey.currentContext!).size.width / 1.5,
-                right: 8,
-                bottom: 8)
-            : null,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        backgroundColor: Colors.white,
-        content: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: AppColors.kWhiteColor,
-              // msgType == MessageType.error
-              //     ? AppColors.kRedColor.withOpacity(0.1)
-              //     : msgType == MessageType.success
-              //         ? AppColors.kGreenColor.withOpacity(0.1)
-              //         : AppColors.kWarningColor.withOpacity(0.1),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              children: [
-                Container(
-                  width: 35,
-                  height: 35,
-                  // padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: AppColors.kWhiteColor,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  alignment: Alignment.center,
-                  child: Icon(
-                    msgType == MessageType.error
-                        ? Icons.cancel
-                        : msgType == MessageType.success
-                            ? Icons.check_circle
-                            : Icons.warning_amber_rounded,
-                    color: msgType == MessageType.error
-                        ? AppColors.kRedColor
-                        : msgType == MessageType.success
-                            ? AppColors.kGreenColor
-                            : AppColors.kWarningColor,
-                    size: 30,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextWidgets.textBold(
-                            title: title!,
-                            fontSize: 14,
-                            textColor: msgType == MessageType.error
-                                ? AppColors.kRedColor
-                                : msgType == MessageType.success
-                                    ? AppColors.kGreenColor
-                                    : AppColors.kWarningColor),
-                        TextWidgets.textNormal(
-                            title: msg,
-                            fontSize: 12,
-                            textColor: msgType == MessageType.error
-                                ? AppColors.kRedColor
-                                : msgType == MessageType.success
-                                    ? AppColors.kGreenColor
-                                    : AppColors.kWarningColor),
+                            textColor: AppColors.kWhiteColor),
                       ]),
                 ),
               ],

@@ -1,15 +1,11 @@
 import '../../Resources/Components/button.dart';
-import '../../Resources/Components/searchable_textfield.dart';
 import '../../Resources/Components/text_fields.dart';
 import '../../Resources/Components/texts.dart';
 import '../../Resources/Constants/enums.dart';
 import '../../Resources/Constants/global_variables.dart';
-import '../../Resources/Constants/navigators.dart';
 import '../../Resources/Models/cultivator.model.dart';
-import '../../Resources/Providers/cultivator.provider.dart';
 import '../../Resources/Providers/mouvement.provider.dart';
 import '../../Resources/Providers/users_provider.dart';
-import '../Client/client.add.dart';
 import '../../main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -28,20 +24,10 @@ class SelectMouvementStoreWidget extends StatefulWidget {
 
 class _SelectMouvementStoreWidgetState
     extends State<SelectMouvementStoreWidget> {
-  final TextEditingController _receiverCtrller = TextEditingController(
-          text: navKey.currentContext!
-                  .read<MouvementProvider>()
-                  .newMouvement
-                  .receiverName ??
-              ''),
+  final TextEditingController _receiverCtrller = TextEditingController(),
       _receiverPhoneCtrller = TextEditingController(),
-      _senderCtrller = TextEditingController(
-          text: navKey.currentContext!
-                  .read<MouvementProvider>()
-                  .newMouvement
-                  .sender
-                  ?.fullname ??
-              '');
+      _senderCtrller = TextEditingController(),
+      _senderPhoneCtrller = TextEditingController();
   String? store, senderUUID, receiverUUID;
   @override
   void initState() {
@@ -88,28 +74,44 @@ class _SelectMouvementStoreWidgetState
                     textColor: AppColors.kBlackColor),
               ),
             ),
-            SearchableTextFormFieldWidget(
-              data: context
-                  .read<CultivatorProvider>()
-                  .offlineData
-                  .map((e) => e.toJSON())
-                  .toList(),
-              displayColumn: 'nom',
-              secondDisplayColumn: 'postnom',
-              indexColumn: 'uuid',
+            // SearchableTextFormFieldWidget(
+            //   data: context
+            //       .read<CultivatorProvider>()
+            //       .offlineData
+            //       .map((e) => e.toJSON())
+            //       .toList(),
+            //   displayColumn: 'nom',
+            //   secondDisplayColumn: 'postnom',
+            //   indexColumn: 'uuid',
+            //   editCtrller: _senderCtrller,
+            //   inputType: TextInputType.text,
+            //   maxLines: 1,
+            //   hintText: 'Expéditeur (*)',
+            //   textColor: AppColors.kBlackColor,
+            //   backColor: AppColors.kTextFormBackColor,
+            //   callback: (data) {
+            //     if (data == null) return;
+            //     sender = ClientModel.fromJSON(data);
+            //     if (sender?.uuid == null) return;
+            //     senderUUID = sender?.uuid;
+            //     setState(() {});
+            //   },
+            // ),
+            TextFormFieldWidget(
               editCtrller: _senderCtrller,
               inputType: TextInputType.text,
               maxLines: 1,
-              hintText: 'Expéditeur (*)',
+              hintText: 'Nom expéditeur (*)',
               textColor: AppColors.kBlackColor,
               backColor: AppColors.kTextFormBackColor,
-              callback: (data) {
-                if (data == null) return;
-                sender = ClientModel.fromJSON(data);
-                if (sender?.uuid == null) return;
-                senderUUID = sender?.uuid;
-                setState(() {});
-              },
+            ),
+            TextFormFieldWidget(
+              editCtrller: _senderPhoneCtrller,
+              inputType: TextInputType.phone,
+              maxLines: 1,
+              hintText: 'N°tel expéditeur (*)',
+              textColor: AppColors.kBlackColor,
+              backColor: AppColors.kTextFormBackColor,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -187,13 +189,19 @@ class _SelectMouvementStoreWidgetState
                           if (store == null ||
                               store!.isEmpty ||
                               store == 'null' ||
-                              senderUUID == null ||
-                              senderUUID!.isEmpty ||
-                              senderUUID == 'null' ||
-                              _receiverCtrller.text.isEmpty) {
+                              _senderPhoneCtrller.text.isEmpty ||
+                              _receiverCtrller.text.isEmpty ||
+                              _senderCtrller.text.isEmpty) {
+                            ToastNotification.showToast(
+                                msg: "Veuillez remplir tous les champs",
+                                msgType: MessageType.error,
+                                title: 'Erreur');
+                            return;
+                          }
+                          if (_senderCtrller.text.split(' ').length < 2) {
                             ToastNotification.showToast(
                                 msg:
-                                    "Veuillez choisir un expéditeur et un destinataire",
+                                    "Veuillez saisir le nom et post-nom de l'expéditeur separé par un espace",
                                 msgType: MessageType.error,
                                 title: 'Erreur');
                             return;
@@ -209,15 +217,12 @@ class _SelectMouvementStoreWidgetState
                           context.read<MouvementProvider>().newMouvement
                             ..storeID = store!
                             // ..receiverID = ''
-                            ..senderID = senderUUID!
+                            ..senderID = ''
                             ..destination = ''
-                            ..sender = sender
+                            ..senderName = _senderCtrller.text.trim()
+                            ..senderTel = _senderPhoneCtrller.text.trim()
                             ..receiverName = _receiverCtrller.text.trim()
                             ..receiverTel = _receiverPhoneCtrller.text.trim();
-                          // ..senderName = _senderCtrller.text.trim()
-                          // ..receiverName = _receiverCtrller.text.trim();
-                          // print(store);
-                          // print(cultivator);
                           widget.callback();
                         }),
                   ),
@@ -227,19 +232,19 @@ class _SelectMouvementStoreWidgetState
             const SizedBox(
               height: 24,
             ),
-            TextWidgets.text500(
-                maxLines: 5,
-                align: TextAlign.center,
-                title: 'Ou',
-                fontSize: 14,
-                textColor: AppColors.kBlackColor),
-            CustomButton(
-                text: 'Enregistrer un client',
-                backColor: AppColors.kTextFormBackColor,
-                textColor: AppColors.kBlackColor,
-                callback: () {
-                  Navigation.pushNavigate(page: const AddClientPage());
-                }),
+            // TextWidgets.text500(
+            //     maxLines: 5,
+            //     align: TextAlign.center,
+            //     title: 'Ou',
+            //     fontSize: 14,
+            //     textColor: AppColors.kBlackColor),
+            // CustomButton(
+            //     text: 'Enregistrer un client',
+            //     backColor: AppColors.kTextFormBackColor,
+            //     textColor: AppColors.kBlackColor,
+            //     callback: () {
+            //       Navigation.pushNavigate(page: const AddClientPage());
+            //     }),
           ],
         ),
       ),

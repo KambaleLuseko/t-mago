@@ -1,5 +1,4 @@
 import '../Resources/Providers/cultivator.provider.dart';
-import '../Resources/Providers/fields.provider.dart';
 import '../Resources/Providers/mouvement.provider.dart';
 import '../Resources/Providers/users_provider.dart';
 
@@ -29,7 +28,7 @@ class _MainPageState extends State<MainPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       context.read<UserProvider>().getUserData();
       context.read<CultivatorProvider>().getOffline();
-      context.read<FieldsProvider>().getOffline();
+      // context.read<FieldsProvider>().getOffline();
       context.read<MouvementProvider>().getOffline();
     });
   }

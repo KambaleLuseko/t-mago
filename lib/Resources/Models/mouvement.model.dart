@@ -6,8 +6,8 @@ import 'store.model.dart';
 
 class MouvementModel {
   String? storeName,
-      // senderName,
-      // senderTel,
+      senderName,
+      senderTel,
       receiverName,
       receiverTel,
       uuid,
@@ -28,8 +28,8 @@ class MouvementModel {
       // required this.receiverID,
       required this.senderID,
       required this.userID,
-      // this.senderName,
-      // this.senderTel,
+      this.senderName,
+      this.senderTel,
       this.receiverName,
       this.receiverTel,
       this.storeName,
@@ -47,7 +47,7 @@ class MouvementModel {
       this.tracking});
 
   static fromJSON(json) {
-    // print(jsonEncode(json['tracking']));
+    // print((json['senderName']));
     var detailsMvt = json['detailsMouvement'] is String
         ? jsonDecode(json['detailsMouvement'])
         : json['detailsMouvement'];
@@ -89,6 +89,8 @@ class MouvementModel {
           : null,
       receiverName: json['receiver_name'] ?? '',
       receiverTel: json['receiver_phone'] ?? '',
+      senderName: json['senderName'] ?? '',
+      senderTel: json['senderTel'] ?? '',
       tracking: json['tracking'] is List<MouvementTrackingModel>
           ? json['tracking']
           : json['tracking'] != null
@@ -108,6 +110,8 @@ class MouvementModel {
       "storeName": storeName ?? '',
       "receiver_name": receiverName ?? '',
       "receiver_phone": receiverTel ?? '',
+      "senderName": senderName ?? '',
+      "senderTel": senderTel ?? '',
       "detailsMouvement":
           jsonEncode(detailsMouvement.map((e) => e.toJSON()).toList()),
       "syncStatus": syncStatus?.toString() ?? '0',

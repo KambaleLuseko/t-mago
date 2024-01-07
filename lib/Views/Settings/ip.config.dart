@@ -1,10 +1,10 @@
-import 'package:entrepot/Resources/Components/button.dart';
-import 'package:entrepot/Resources/Components/dropdown_button.dart';
-import 'package:entrepot/Resources/Components/text_fields.dart';
-import 'package:entrepot/Resources/Components/texts.dart';
-import 'package:entrepot/Resources/Constants/global_variables.dart';
-import 'package:entrepot/Resources/Providers/app_state_provider.dart';
-import 'package:entrepot/main.dart';
+import 'package:t_mago/Resources/Components/button.dart';
+import 'package:t_mago/Resources/Components/dropdown_button.dart';
+import 'package:t_mago/Resources/Components/text_fields.dart';
+import 'package:t_mago/Resources/Components/texts.dart';
+import 'package:t_mago/Resources/Constants/global_variables.dart';
+import 'package:t_mago/Resources/Providers/app_state_provider.dart';
+import 'package:t_mago/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

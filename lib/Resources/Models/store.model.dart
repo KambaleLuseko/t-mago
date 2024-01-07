@@ -32,12 +32,17 @@ class StoreModel {
 
 class PriceModel {
   int? id;
-  String price, currency;
-  PriceModel({required this.price, required this.currency, this.id});
+  String price, currency, maxPrice;
+  PriceModel(
+      {required this.price,
+      required this.currency,
+      this.id,
+      required this.maxPrice});
 
   static fromJSON(json) {
     return PriceModel(
       price: json['prix_kg'],
+      maxPrice: json['max_prix'],
       currency: json['design_device'],
       id: int.tryParse(
         json['id_prix'].toString(),
@@ -48,6 +53,7 @@ class PriceModel {
   toJSON() {
     return {
       "prix_kg": price,
+      "max_prix": maxPrice,
       "design_device": currency,
       "id_prix": id,
     };

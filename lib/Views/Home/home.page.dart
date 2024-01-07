@@ -3,10 +3,9 @@ import '../../Resources/Constants/global_variables.dart';
 import '../../Resources/Models/mouvement.model.dart';
 import '../../Resources/Providers/app_state_provider.dart';
 import '../../Resources/Providers/cultivator.provider.dart';
-import '../../Resources/Providers/fields.provider.dart';
 import '../../Resources/Providers/mouvement.provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,9 +40,9 @@ class _HomePageState extends State<HomePage> {
                           context
                               .read<CultivatorProvider>()
                               .getOnline(isRefresh: true);
-                          context
-                              .read<FieldsProvider>()
-                              .getOnline(isRefresh: true);
+                          // context
+                          //     .read<FieldsProvider>()
+                          //     .getOnline(isRefresh: true);
                           context
                               .read<MouvementProvider>()
                               .getOnline(isRefresh: true);

@@ -48,8 +48,8 @@ class MouvementProvider extends ChangeNotifier {
       EnumActions? action = EnumActions.SAVE,
       required Function callback}) async {
     if (data.detailsMouvement.toString().isEmpty ||
-        data.senderID.toString().isEmpty ||
-        data.storeID.toString().isEmpty) {
+        data.senderName.toString().isEmpty ||
+        data.destination.toString().isEmpty) {
       return ToastNotification.showToast(
           msg: "Veuillez remplir tous les champs",
           msgType: MessageType.error,

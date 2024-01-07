@@ -1,7 +1,7 @@
-// import 'package:entrepot/Resources/Components/dialogs.dart';
-// import 'package:entrepot/Resources/Constants/enums.dart';
-// import 'package:entrepot/Resources/Helpers/uuid_generator.dart';
-// import 'package:entrepot/main.dart';
+// import 'package:t_mago/Resources/Components/dialogs.dart';
+// import 'package:t_mago/Resources/Constants/enums.dart';
+// import 'package:t_mago/Resources/Helpers/uuid_generator.dart';
+// import 'package:t_mago/main.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_sunmi_printer/flutter_sunmi_printer.dart';
 

@@ -1,4 +1,4 @@
-package com.applicatoryx.entrepot;
+package com.magocorporate.t_mago;
 
 import io.flutter.embedding.android.FlutterActivity;
 

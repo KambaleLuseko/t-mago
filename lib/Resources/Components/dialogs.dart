@@ -455,7 +455,7 @@ class Dialogs {
                           TextWidgets.textBold(
                               align: TextAlign.center,
                               title: title,
-                              fontSize: 14,
+                              fontSize: 16,
                               textColor: AppColors.kBlackColor),
                           const SizedBox(
                             height: 15,
