@@ -27,6 +27,7 @@ class ParentPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   FloatingActionButton(
+                    // mini: true,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16)),
                     backgroundColor: AppColors.kPrimaryColor,

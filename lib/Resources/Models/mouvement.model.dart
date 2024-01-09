@@ -17,7 +17,8 @@ class MouvementModel {
       image,
       refMvtEntry,
       destination,
-      createdAt;
+      createdAt,
+      status;
   int? syncStatus, id;
   String mouvementType, storeID, userID;
   List<MouvementDetailsModel> detailsMouvement;
@@ -48,6 +49,7 @@ class MouvementModel {
       this.destination,
       this.outStock,
       this.createdAt,
+      this.status,
       this.sender,
       this.destinationStore,
       this.tracking});
@@ -88,6 +90,7 @@ class MouvementModel {
                   ? MouvementModel.fromJSON(json['outStock'])
                   : null,
       createdAt: json['created_at'] ?? DateTime.now().toString(),
+      status: json['status'] ?? 'Pending',
       sender:
           json['sender'] != null ? ClientModel.fromJSON(json['sender']) : null,
       destinationStore: json['destinationStore'] != null
@@ -133,6 +136,7 @@ class MouvementModel {
       "destination": destination ?? '',
       if (outStock != null) "outStock": outStock?.toJSON(),
       'created_at': createdAt ?? DateTime.now().toString(),
+      'status': status ?? 'Pending',
       'sender': sender?.toJSON(),
       'destinationStore': destinationStore?.toJSON(),
       "tracking": jsonEncode(tracking?.map((e) => e.toJson()).toList()),

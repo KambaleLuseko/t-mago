@@ -127,194 +127,206 @@ class _SaveSalePageState extends State<OperationScanPage> {
                           : MouvementDetailsPage(data: data),
                     );
                   }),
-          if (context.select<MouvementProvider, MouvementModel?>(
-                  (provider) => provider.activeOperation) !=
-              null)
-            if (context
-                    .select<MouvementProvider, MouvementModel?>(
-                        (provider) => provider.activeOperation)!
-                    .tracking!
-                    .last
-                    .label
-                    ?.toLowerCase() !=
-                widget.operation.toLowerCase())
-              if (!context
+          if (context
+                  .select<MouvementProvider, MouvementModel?>(
+                      (provider) => provider.activeOperation)
+                  ?.status
+                  ?.toLowerCase() !=
+              'completed')
+            if (context.select<MouvementProvider, MouvementModel?>(
+                    (provider) => provider.activeOperation) !=
+                null)
+              if (context
                       .select<MouvementProvider, MouvementModel?>(
                           (provider) => provider.activeOperation)!
                       .tracking!
                       .last
-                      .label!
-                      .toLowerCase()
-                      .contains('colis re') ||
-                  !widget.operation.toLowerCase().contains('recep'))
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: CustomButton(
-                      text: 'Enregistrer',
-                      backColor: AppColors.kPrimaryColor,
-                      textColor: AppColors.kWhiteColor,
-                      callback: () {
-                        if (!widget.operation.toLowerCase().contains('env')) {
-                          if (widget.operation.toLowerCase().contains('livr') ||
-                              widget.operation.toLowerCase().contains('ship')) {
-                            if (context
-                                    .read<UserProvider>()
-                                    .userLogged
-                                    ?.user
-                                    .refDepot !=
-                                context
-                                    .read<MouvementProvider>()
-                                    .activeOperation
-                                    ?.destination) {
-                              ToastNotification.showToast(
-                                  msg:
-                                      "Vous ne faites pas partie de l'entrepot de destination, de ce fait, vous ne pouvez pas livrer le colis au destinataire",
-                                  msgType: MessageType.error,
-                                  title: 'Erreur');
-                              return;
+                      .label
+                      ?.toLowerCase() !=
+                  widget.operation.toLowerCase())
+                if (!context
+                        .select<MouvementProvider, MouvementModel?>(
+                            (provider) => provider.activeOperation)!
+                        .tracking!
+                        .last
+                        .label!
+                        .toLowerCase()
+                        .contains('colis re') ||
+                    !widget.operation.toLowerCase().contains('recep'))
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: CustomButton(
+                        text: 'Enregistrer',
+                        backColor: AppColors.kPrimaryColor,
+                        textColor: AppColors.kWhiteColor,
+                        callback: () {
+                          if (!widget.operation.toLowerCase().contains('env')) {
+                            if (widget.operation
+                                    .toLowerCase()
+                                    .contains('livr') ||
+                                widget.operation
+                                    .toLowerCase()
+                                    .contains('ship')) {
+                              // if (context
+                              //         .read<UserProvider>()
+                              //         .userLogged
+                              //         ?.user
+                              //         .refDepot !=
+                              //     context
+                              //         .read<MouvementProvider>()
+                              //         .activeOperation
+                              //         ?.destination) {
+                              //   ToastNotification.showToast(
+                              //       msg:
+                              //           "Vous ne faites pas partie de l'entrepot de destination, de ce fait, vous ne pouvez pas livrer le colis au destinataire",
+                              //       msgType: MessageType.error,
+                              //       title: 'Erreur');
+                              //   return;
+                              // }
+                              if (!context
+                                  .read<MouvementProvider>()
+                                  .activeOperation!
+                                  .tracking!
+                                  .last
+                                  .label!
+                                  .toLowerCase()
+                                  .contains('recept')) {
+                                ToastNotification.showToast(
+                                    msg:
+                                        "Le colis n'a pas encore signalé sa réception à la destination et de ce fait il ne peut pas être livré",
+                                    msgType: MessageType.error,
+                                    title: 'Erreur');
+                                return;
+                              }
                             }
-                            if (!context
-                                .read<MouvementProvider>()
-                                .activeOperation!
-                                .tracking!
-                                .last
-                                .label!
-                                .toLowerCase()
-                                .contains('recept')) {
-                              ToastNotification.showToast(
-                                  msg:
-                                      "Le colis n'a pas encore signalé sa réception à la destination et de ce fait il ne peut pas être livré",
-                                  msgType: MessageType.error,
-                                  title: 'Erreur');
-                              return;
-                            }
-                          }
-                          Dialogs.showDialogWithAction(
-                              title: 'Confirmation',
-                              content:
-                                  "Vous êtes sur le point d'ajouter le statut <<${widget.operation}>> sur le parcours de ce colis.\nVoulez-vous continuer?",
-                              callback: () {
-                                MouvementTrackingModel body =
-                                    MouvementTrackingModel(
-                                        destDepotId: '0',
-                                        sourceDepotId: context
-                                            .read<UserProvider>()
-                                            .userLogged
-                                            ?.user
-                                            .refDepot,
-                                        label: widget.operation.toUpperCase(),
-                                        mouvUuid: context
+                            Dialogs.showDialogWithAction(
+                                title: 'Confirmation',
+                                content:
+                                    "Vous êtes sur le point d'ajouter le statut <<${widget.operation}>> sur le parcours de ce colis.\nVoulez-vous continuer?",
+                                callback: () {
+                                  MouvementTrackingModel body =
+                                      MouvementTrackingModel(
+                                          destDepotId: '0',
+                                          sourceDepotId: context
+                                              .read<UserProvider>()
+                                              .userLogged
+                                              ?.user
+                                              .refDepot,
+                                          label: widget.operation.toUpperCase(),
+                                          mouvUuid: context
+                                              .read<MouvementProvider>()
+                                              .activeOperation
+                                              ?.uuid,
+                                          userId: context
+                                              .read<UserProvider>()
+                                              .userLogged
+                                              ?.user
+                                              .id
+                                              ?.toString());
+                                  context.read<MouvementProvider>().addtracking(
+                                      data: body,
+                                      callback: () {
+                                        context
                                             .read<MouvementProvider>()
-                                            .activeOperation
-                                            ?.uuid,
-                                        userId: context
-                                            .read<UserProvider>()
-                                            .userLogged
-                                            ?.user
-                                            .id
-                                            ?.toString());
-                                context.read<MouvementProvider>().addtracking(
-                                    data: body,
-                                    callback: () {
-                                      context
+                                            .resetOperation();
+                                      });
+                                });
+                            return;
+                          }
+                          Dialogs.showChoiceDialog(
+                              title: 'Choisissez la destination',
+                              content: Container(
+                                padding: const EdgeInsets.all(8),
+                                color: AppColors.kScaffoldColor,
+                                child: Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    ...List.generate(
+                                        context
+                                            .read<MouvementProvider>()
+                                            .offlineStoreData
+                                            .length, (index) {
+                                      StoreModel store = context
                                           .read<MouvementProvider>()
-                                          .resetOperation();
-                                    });
-                              });
-                          return;
-                        }
-                        Dialogs.showChoiceDialog(
-                            title: 'Choisissez la destination',
-                            content: Container(
-                              padding: const EdgeInsets.all(8),
-                              color: AppColors.kScaffoldColor,
-                              child: Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  ...List.generate(
-                                      context
-                                          .read<MouvementProvider>()
-                                          .offlineStoreData
-                                          .length, (index) {
-                                    StoreModel store = context
-                                        .read<MouvementProvider>()
-                                        .offlineStoreData[index];
-                                    return ActionChip(
-                                        onPressed: () {
-                                          destStore = store;
-                                          setState(() {});
-                                          Navigator.pop(context);
-                                          Dialogs.showDialogWithAction(
-                                              title: 'Confirmation',
-                                              content:
-                                                  "Vous êtes sur le point d'ajouter le statut <<${widget.operation}>> sur le parcours de ce colis.\nVoulez-vous continuer?",
-                                              callback: () {
-                                                MouvementTrackingModel body =
-                                                    MouvementTrackingModel(
-                                                        destDepotId: destStore
-                                                            ?.id
-                                                            ?.toString(),
-                                                        sourceDepotId: context
-                                                            .read<
-                                                                UserProvider>()
-                                                            .userLogged
-                                                            ?.user
-                                                            .refDepot,
-                                                        label: widget.operation
-                                                            .toUpperCase(),
-                                                        mouvUuid: context
-                                                            .read<
-                                                                MouvementProvider>()
-                                                            .activeOperation
-                                                            ?.uuid,
-                                                        userId: context
-                                                            .read<
-                                                                UserProvider>()
-                                                            .userLogged
-                                                            ?.user
-                                                            .id
-                                                            ?.toString());
-                                                context
-                                                    .read<MouvementProvider>()
-                                                    .addtracking(
-                                                        data: body,
-                                                        callback: () {
-                                                          context
+                                          .offlineStoreData[index];
+                                      return ActionChip(
+                                          onPressed: () {
+                                            destStore = store;
+                                            setState(() {});
+                                            Navigator.pop(context);
+                                            Dialogs.showDialogWithAction(
+                                                title: 'Confirmation',
+                                                content:
+                                                    "Vous êtes sur le point d'ajouter le statut <<${widget.operation}>> sur le parcours de ce colis.\nVoulez-vous continuer?",
+                                                callback: () {
+                                                  MouvementTrackingModel body =
+                                                      MouvementTrackingModel(
+                                                          destDepotId: destStore
+                                                              ?.id
+                                                              ?.toString(),
+                                                          sourceDepotId: context
+                                                              .read<
+                                                                  UserProvider>()
+                                                              .userLogged
+                                                              ?.user
+                                                              .refDepot,
+                                                          label: widget
+                                                              .operation
+                                                              .toUpperCase(),
+                                                          mouvUuid: context
                                                               .read<
                                                                   MouvementProvider>()
-                                                              .resetOperation();
-                                                        });
-                                              });
-                                        },
-                                        avatar: TextWidgets.textBold(
-                                            title: store.name
-                                                .substring(0, 1)
-                                                .toUpperCase(),
-                                            fontSize: 18,
+                                                              .activeOperation
+                                                              ?.uuid,
+                                                          userId: context
+                                                              .read<
+                                                                  UserProvider>()
+                                                              .userLogged
+                                                              ?.user
+                                                              .id
+                                                              ?.toString());
+                                                  context
+                                                      .read<MouvementProvider>()
+                                                      .addtracking(
+                                                          data: body,
+                                                          callback: () {
+                                                            context
+                                                                .read<
+                                                                    MouvementProvider>()
+                                                                .resetOperation();
+                                                          });
+                                                });
+                                          },
+                                          avatar: TextWidgets.textBold(
+                                              title: store.name
+                                                  .substring(0, 1)
+                                                  .toUpperCase(),
+                                              fontSize: 18,
+                                              textColor:
+                                                  destStore?.id == store.id
+                                                      ? AppColors.kWhiteColor
+                                                      : AppColors.kBlackColor),
+                                          backgroundColor:
+                                              destStore?.id == store.id
+                                                  ? AppColors.kPrimaryColor
+                                                  : AppColors.kWhiteColor,
+                                          elevation: 0,
+                                          label: TextWidgets.text300(
+                                            title: store.name,
+                                            fontSize: 12,
                                             textColor: destStore?.id == store.id
                                                 ? AppColors.kWhiteColor
-                                                : AppColors.kBlackColor),
-                                        backgroundColor:
-                                            destStore?.id == store.id
-                                                ? AppColors.kPrimaryColor
-                                                : AppColors.kWhiteColor,
-                                        elevation: 0,
-                                        label: TextWidgets.text300(
-                                          title: store.name,
-                                          fontSize: 12,
-                                          textColor: destStore?.id == store.id
-                                              ? AppColors.kWhiteColor
-                                              : AppColors.kBlackColor,
-                                        ));
-                                  })
-                                ],
-                              ),
-                            ));
+                                                : AppColors.kBlackColor,
+                                          ));
+                                    })
+                                  ],
+                                ),
+                              ));
 
-                        // context.read<MouvementProvider>().resetOperation();
-                      }),
-                ),
+                          // context.read<MouvementProvider>().resetOperation();
+                        }),
+                  ),
           if ((context.select<MouvementProvider, MouvementModel?>(
                       (provider) => provider.activeOperation) !=
                   null) &&
@@ -343,6 +355,25 @@ class _SaveSalePageState extends State<OperationScanPage> {
                     textColor: AppColors.kRedColor),
               ),
             ),
+          if (context
+                  .select<MouvementProvider, MouvementModel?>(
+                      (provider) => provider.activeOperation)
+                  ?.status
+                  ?.toLowerCase() ==
+              'completed')
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.center,
+                child: TextWidgets.textBold(
+                    maxLines: 3,
+                    align: TextAlign.center,
+                    title:
+                        'Ce colis est déjà arrivé à destination et livré au destinataire',
+                    fontSize: 14,
+                    textColor: AppColors.kRedColor),
+              ),
+            ),
           if ((context.select<MouvementProvider, MouvementModel?>(
                   (provider) => provider.activeOperation) !=
               null))
@@ -358,6 +389,7 @@ class _SaveSalePageState extends State<OperationScanPage> {
                   Align(
                     alignment: Alignment.center,
                     child: TextWidgets.text300(
+                        maxLines: 3,
                         title: 'Le colis est déjà reçu',
                         fontSize: 16,
                         textColor: AppColors.kRedColor),
@@ -373,6 +405,7 @@ class _SaveSalePageState extends State<OperationScanPage> {
                   Align(
                     alignment: Alignment.center,
                     child: TextWidgets.text300(
+                        maxLines: 3,
                         align: TextAlign.center,
                         title:
                             'Le niveau de progression du colis est identique à l\'opération que vous voulez effectuer',

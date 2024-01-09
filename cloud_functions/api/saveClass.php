@@ -72,6 +72,11 @@ class Save
                     $req = "INSERT INTO `mouvement_tracking` (`uuid`, `mouv_uuid`, `user_id`, `source_depot_id`, `dest_depot_id`, `label`) VALUES ('$uuid', '$mouv_uuid',  '$senderID','$source_depot_id', '$dest_depot_id', '$label') ";
                     $res = mysqli_query(Constants::connect(), $req);
                     if ($res) {
+                        $upateOperation = "UPDATE mouvement SET `status`='Ongoing' WHERE uuid='$mouv_uuid'";
+                        if (str_contains(strtolower($label), 'ship') || str_contains(strtolower($label), 'livr')) {
+                            $upateOperation = "UPDATE mouvement SET `status`='Completed' WHERE uuid='$mouv_uuid'";
+                        }
+                        $resOp = mysqli_query(Constants::connect(), $upateOperation);
                         $msg["state"] = "success";
                         $msg["content"] = "Donnée enregistrée avec succès";
                     } else {
