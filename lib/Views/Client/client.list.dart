@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../Resources/Components/list_item.dart';
 import '../../Resources/Components/search_textfield.dart';
 import '../../Resources/Constants/global_variables.dart';
@@ -5,8 +8,6 @@ import '../../Resources/Helpers/date_parser.dart';
 import '../../Resources/Models/Menu/list_item.model.dart';
 import '../../Resources/Models/cultivator.model.dart';
 import '../../Resources/Providers/cultivator.provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ClientListPage extends StatefulWidget {
   const ClientListPage({Key? key}) : super(key: key);

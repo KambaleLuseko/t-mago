@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import '../Resources/Components/texts.dart';
 import '../Resources/Constants/global_variables.dart';
-import 'package:flutter/material.dart';
 
 class ParentPage extends StatelessWidget {
   final String title;

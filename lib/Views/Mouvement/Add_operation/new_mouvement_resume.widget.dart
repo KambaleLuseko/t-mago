@@ -1,32 +1,30 @@
 import 'dart:io';
 
-import 'package:t_mago/Views/Mouvement/widgets/product_details.widget.dart';
-
-import '../../Resources/Components/button.dart';
-import '../../Resources/Components/dialogs.dart';
-import '../../Resources/Components/texts.dart';
-import '../../Resources/Constants/enums.dart';
-import '../../Resources/Constants/global_variables.dart';
-import '../../Resources/Models/mouvement.model.dart';
-import '../../Resources/Providers/humidity.provider.dart';
-import '../../Resources/Providers/mouvement.provider.dart';
-import '../../Resources/Providers/users_provider.dart';
 import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:t_mago/Resources/Components/button.dart';
+import 'package:t_mago/Resources/Components/dialogs.dart';
+import 'package:t_mago/Resources/Components/texts.dart';
+import 'package:t_mago/Resources/Constants/enums.dart';
+import 'package:t_mago/Resources/Constants/global_variables.dart';
+import 'package:t_mago/Resources/Models/mouvement.model.dart';
+import 'package:t_mago/Resources/Providers/mouvement.provider.dart';
+import 'package:t_mago/Resources/Providers/users_provider.dart';
+import 'package:t_mago/Views/Mouvement/Add_operation/product_details.widget.dart';
 
-class MouvementDetailsWidget extends StatefulWidget {
+class MouvementResumeWidget extends StatefulWidget {
   final Function() backCallback;
   List<MouvementDetailsModel>? data;
-  MouvementDetailsWidget(
+  MouvementResumeWidget(
       {Key? key, required this.backCallback, this.data = const []})
       : super(key: key);
 
   @override
-  State<MouvementDetailsWidget> createState() => _MouvementDetailsWidgetState();
+  State<MouvementResumeWidget> createState() => _MouvementDetailsWidgetState();
 }
 
-class _MouvementDetailsWidgetState extends State<MouvementDetailsWidget> {
+class _MouvementDetailsWidgetState extends State<MouvementResumeWidget> {
   // String? uom;
   List<MouvementDetailsModel> data = [];
   Future<File>? file;
@@ -132,8 +130,8 @@ class _MouvementDetailsWidgetState extends State<MouvementDetailsWidget> {
           child: RefreshIndicator(
             onRefresh: () async {
               context
-                  .read<HumidityPricesProvider>()
-                  .getOnlineHumidity(isRefresh: true);
+                  .read<MouvementProvider>()
+                  .getOnlinePrices(isRefresh: true);
             },
             child: ListView(
               children: [

@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../Resources/Components/texts.dart';
 import '../../Resources/Constants/global_variables.dart';
 import '../../Resources/Providers/sync.provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SyncDataPage extends StatefulWidget {
   const SyncDataPage({Key? key}) : super(key: key);

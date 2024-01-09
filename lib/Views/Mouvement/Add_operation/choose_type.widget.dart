@@ -1,3 +1,6 @@
+import '../widgets/operation_scan.details.dart';
+import '../widgets/scan_input.widget.dart';
+
 import '../../../Resources/Components/button.dart';
 import '../../../Resources/Components/card.dart';
 import '../../../Resources/Components/dialogs.dart';
@@ -6,8 +9,6 @@ import '../../../Resources/Constants/enums.dart';
 import '../../../Resources/Constants/global_variables.dart';
 import '../../../Resources/Constants/navigators.dart';
 import '../../../Resources/Providers/mouvement.provider.dart';
-import 'operation_scan.details.dart';
-import 'scan_input.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -129,13 +130,12 @@ class _ChooseFuelTypeWidgetState extends State<ChooseOperationTypeWidget> {
                                                         'Valeurs incorrectes');
                                                 return;
                                               }
-                                              print(_packCtrller.text);
-                                              print(_receiverCtrller.text);
                                               context
                                                   .read<MouvementProvider>()
                                                   .getOneOnline(
                                                       value: _packCtrller.text
                                                           .trim());
+                                              Navigator.pop(context);
                                               Navigation.pushNavigate(
                                                   page: OperationScanPage(
                                                 operation: operationType,

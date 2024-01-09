@@ -1,17 +1,16 @@
 import 'dart:convert';
 
-import '../Constants/navigators.dart';
-import '../../Views/login.dart';
-
-import '../../Resources/Helpers/LocalData/local_data.helper.dart';
-import '../../Resources/Models/user.model.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import '../../Resources/Constants/app_providers.dart';
 import '../../Resources/Constants/enums.dart';
 import '../../Resources/Constants/global_variables.dart';
+import '../../Resources/Helpers/LocalData/local_data.helper.dart';
+import '../../Resources/Models/user.model.dart';
+import '../../Views/login.dart';
 import '../../main.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import '../Constants/navigators.dart';
 
 class UserProvider extends ChangeNotifier {
   String keyName = 'users';

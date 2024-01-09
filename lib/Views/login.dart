@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../Resources/Components/button.dart';
 import '../Resources/Components/text_fields.dart';
 import '../Resources/Components/texts.dart';
@@ -5,9 +8,6 @@ import '../Resources/Constants/global_variables.dart';
 import '../Resources/Constants/navigators.dart';
 import '../Resources/Providers/users_provider.dart';
 import 'main_page.dart';
-
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override

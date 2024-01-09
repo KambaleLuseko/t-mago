@@ -16,9 +16,9 @@ class TrackingWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (date.isNotEmpty)
-            Container(
-              constraints: const BoxConstraints(maxWidth: 120, minWidth: 20),
-              // width: 120,
+            SizedBox(
+              // constraints: const BoxConstraints(maxWidth: 120, minWidth: 20),
+              width: 40,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -28,12 +28,12 @@ class TrackingWidget {
                           .trim()
                           .substring(0, 5),
                       fontSize: 10,
-                      textColor: AppColors.kGreyColor),
+                      textColor: AppColors.kBlackColor.withOpacity(0.6)),
                   if (date.toString().trim().length >= 16)
                     TextWidgets.text300(
                         title: date.toString().substring(11, 16),
                         fontSize: 10,
-                        textColor: AppColors.kGreyColor),
+                        textColor: AppColors.kBlackColor.withOpacity(0.6)),
                 ],
               ),
             ),

@@ -1,6 +1,4 @@
-import '../../Resources/Constants/app_providers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 import '../../Resources/Constants/global_variables.dart';

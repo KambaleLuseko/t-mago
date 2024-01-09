@@ -1,10 +1,12 @@
-import '../../Resources/Models/mouvement.model.dart';
-import '../../Resources/Providers/mouvement.provider.dart';
-import 'mouvement_details.widget.dart';
+import 'select_mouv_dest.widget.dart';
+
+import '../../../Resources/Models/mouvement.model.dart';
+import '../../../Resources/Providers/mouvement.provider.dart';
+
+import 'new_mouvement_resume.widget.dart';
 import 'select_mouv_store.widget.dart';
-import 'select_mouv_type.widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 
 late PageController pageViewCtrller;
 
@@ -69,7 +71,7 @@ class _AddMouvementPageState extends State<AddMouvementPage> {
             //   setState(() {});
             // },
           ),
-          SelectMouvementTypeWidget(
+          SelectMouvementDestinationWidget(
             callback: () {
               pageViewCtrller.animateToPage(2,
                   duration: const Duration(milliseconds: 300),
@@ -83,7 +85,7 @@ class _AddMouvementPageState extends State<AddMouvementPage> {
               setState(() {});
             },
           ),
-          MouvementDetailsWidget(
+          MouvementResumeWidget(
             data: widget.data,
             backCallback: () {
               pageViewCtrller.animateToPage(1,

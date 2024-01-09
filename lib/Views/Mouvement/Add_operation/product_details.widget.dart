@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:t_mago/Resources/Components/button.dart';
-import 'package:t_mago/Resources/Components/searchable_textfield.dart';
-import 'package:t_mago/Resources/Components/text_fields.dart';
-import 'package:t_mago/Resources/Constants/enums.dart';
-import 'package:t_mago/Resources/Constants/global_variables.dart';
-import 'package:t_mago/Resources/Models/mouvement.model.dart';
-import 'package:t_mago/Resources/Models/store.model.dart';
-import 'package:t_mago/Resources/Providers/mouvement.provider.dart';
+import '../../../Resources/Components/button.dart';
+import '../../../Resources/Components/searchable_textfield.dart';
+import '../../../Resources/Components/text_fields.dart';
+import '../../../Resources/Constants/enums.dart';
+import '../../../Resources/Constants/global_variables.dart';
+import '../../../Resources/Models/mouvement.model.dart';
+import '../../../Resources/Models/store.model.dart';
+import '../../../Resources/Providers/mouvement.provider.dart';
 
 class ProductDetailsWidget extends StatefulWidget {
   Function(MouvementDetailsModel) callback;

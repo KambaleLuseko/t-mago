@@ -1,19 +1,19 @@
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'Resources/Constants/global_variables.dart';
 import 'Resources/Providers/app_state_provider.dart';
 import 'Resources/Providers/cultivator.provider.dart';
 import 'Resources/Providers/fields.provider.dart';
 import 'Resources/Providers/humidity.provider.dart';
 import 'Resources/Providers/menu_provider.dart';
+import 'Resources/Providers/mouvement.provider.dart';
 import 'Resources/Providers/sync.provider.dart';
 import 'Resources/Providers/users_provider.dart';
 import 'Views/login.dart';
 import 'Views/main_page.dart';
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Resources/Providers/mouvement.provider.dart';
 
 List storeNames = ['cultivators', 'fields', 'mouvements', 'users', 'humidites'];
 void main() async {

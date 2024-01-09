@@ -1,5 +1,6 @@
-import 'texts.dart';
 import 'package:flutter/material.dart';
+
+import 'texts.dart';
 
 class EmptyModel extends StatelessWidget {
   final Color color;

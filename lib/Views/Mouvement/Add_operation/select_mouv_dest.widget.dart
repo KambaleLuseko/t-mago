@@ -1,26 +1,27 @@
-import '../../Resources/Components/button.dart';
-import '../../Resources/Components/texts.dart';
-import '../../Resources/Constants/enums.dart';
-import '../../Resources/Constants/global_variables.dart';
-import '../../Resources/Models/store.model.dart';
-import '../../Resources/Providers/mouvement.provider.dart';
-import '../../main.dart';
+import '../../../Resources/Components/button.dart';
+import '../../../Resources/Components/texts.dart';
+import '../../../Resources/Constants/enums.dart';
+import '../../../Resources/Constants/global_variables.dart';
+import '../../../Resources/Models/store.model.dart';
+import '../../../Resources/Providers/mouvement.provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
+import '../../../main.dart';
 
-class SelectMouvementTypeWidget extends StatefulWidget {
+class SelectMouvementDestinationWidget extends StatefulWidget {
   Function callback;
   final Function() backCallback;
-  SelectMouvementTypeWidget(
+  SelectMouvementDestinationWidget(
       {Key? key, required this.callback, required this.backCallback})
       : super(key: key);
 
   @override
-  State<SelectMouvementTypeWidget> createState() =>
+  State<SelectMouvementDestinationWidget> createState() =>
       _SelectMouvementTypeWidgetState();
 }
 
-class _SelectMouvementTypeWidgetState extends State<SelectMouvementTypeWidget> {
+class _SelectMouvementTypeWidgetState
+    extends State<SelectMouvementDestinationWidget> {
   final TextEditingController _destinationCtrller = TextEditingController(
       text: navKey.currentContext!
               .read<MouvementProvider>()

@@ -1,9 +1,10 @@
-import '../../../Resources/Components/dialogs.dart';
-import '../../../Resources/Components/text_fields.dart';
-import '../../../Resources/Constants/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
+
+import '../../../Resources/Components/dialogs.dart';
+import '../../../Resources/Components/text_fields.dart';
+import '../../../Resources/Constants/global_variables.dart';
 
 class ScanInputWidget extends StatelessWidget {
   const ScanInputWidget(

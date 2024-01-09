@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../Resources/Components/button.dart';
 import '../../Resources/Components/text_fields.dart';
 import '../../Resources/Components/texts.dart';
 import '../../Resources/Constants/global_variables.dart';
 import '../../Resources/Models/cultivator.model.dart';
 import '../../Resources/Providers/cultivator.provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AddClientPage extends StatefulWidget {
   const AddClientPage({Key? key}) : super(key: key);

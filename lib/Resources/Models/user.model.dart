@@ -1,5 +1,4 @@
 // import '../../Resources/Helpers/uuid_generator.dart';
-import '../../Resources/Models/user_permission.model.dart';
 
 class UserModel {
   final String fullname, username, password;

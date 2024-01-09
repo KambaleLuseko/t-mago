@@ -6,6 +6,9 @@ import 'store.model.dart';
 
 class MouvementModel {
   String? storeName,
+      storeAddress,
+      destStoreName,
+      destStoreAddress,
       senderName,
       senderTel,
       receiverName,
@@ -16,7 +19,7 @@ class MouvementModel {
       destination,
       createdAt;
   int? syncStatus, id;
-  String mouvementType, storeID, senderID, userID;
+  String mouvementType, storeID, userID;
   List<MouvementDetailsModel> detailsMouvement;
   List<MouvementTrackingModel>? tracking;
   ClientModel? sender;
@@ -26,13 +29,16 @@ class MouvementModel {
       {required this.mouvementType,
       required this.storeID,
       // required this.receiverID,
-      required this.senderID,
+      // required this.senderID,
       required this.userID,
       this.senderName,
       this.senderTel,
       this.receiverName,
       this.receiverTel,
       this.storeName,
+      this.storeAddress,
+      this.destStoreName,
+      this.destStoreAddress,
       required this.detailsMouvement,
       this.syncStatus,
       this.uuid,
@@ -54,13 +60,13 @@ class MouvementModel {
 
     var track = json['tracking'] is String
         ? jsonDecode(json['tracking'])
-        : json['tracking'];
+        : json['tracking'] ?? [];
     return MouvementModel(
       mouvementType: json['type_mvt'],
       storeID: json['ref_depot'],
       userID: json['ref_user'],
       // receiverID: json['receiverID'].toString(),
-      senderID: json['senderID'].toString(),
+      // senderID: json['senderID'].toString(),
       storeName: json['storeName'],
       detailsMouvement: json['detailsMouvement'] is List<MouvementDetailsModel>
           ? json['detailsMouvement']
@@ -97,17 +103,22 @@ class MouvementModel {
               ? List<MouvementTrackingModel>.from(
                   track.map((e) => MouvementTrackingModel.fromJson(e)))
               : [],
-    );
+    )
+      ..storeAddress = json['storeAddress']
+      ..destStoreName = json['destStoreName']
+      ..destStoreAddress = json['destStoreAddress'];
   }
 
   toJSON() {
     return {
       "type_mvt": mouvementType,
       "ref_depot": storeID.toString(),
-      // "receiverID": receiverID.toString(),
-      "senderID": senderID.toString(),
+      // "senderID": senderID.toString(),
       "ref_user": userID.toString(),
       "storeName": storeName ?? '',
+      'storeAddress': storeAddress,
+      "destStoreName": destStoreName,
+      "destStoreAddress": destStoreAddress,
       "receiver_name": receiverName ?? '',
       "receiver_phone": receiverTel ?? '',
       "senderName": senderName ?? '',
@@ -230,7 +241,7 @@ class MouvementTrackingModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['uuid'] = uuid;
+    data['uuid'] = uuid ?? uuidGenerator();
     data['mouv_uuid'] = mouvUuid;
     data['user_id'] = userId;
     data['source_depot_id'] = sourceDepotId;

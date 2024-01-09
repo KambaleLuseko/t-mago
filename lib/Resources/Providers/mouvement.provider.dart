@@ -32,7 +32,7 @@ class MouvementProvider extends ChangeNotifier {
   MouvementModel newMouvement = MouvementModel(
       mouvementType: '',
       storeID: '',
-      senderID: '',
+      // senderID: '',
       userID: navKey.currentContext!
               .read<UserProvider>()
               .userLogged
@@ -59,6 +59,9 @@ class MouvementProvider extends ChangeNotifier {
     body.remove('sender');
     body.remove('receiver');
     body.remove('destinationStore');
+    body.remove('tracking');
+    body.removeWhere((key, value) => value == null);
+    // print(body);
     // return;
     var response = await Provider.of<AppStateProvider>(navKey.currentContext!,
             listen: false)
@@ -87,7 +90,7 @@ class MouvementProvider extends ChangeNotifier {
                 '',
             mouvementType: '',
             storeID: '',
-            senderID: '',
+            // senderID: '',
             // receiverID: '',
             detailsMouvement: []);
         index = 0;
@@ -119,7 +122,7 @@ class MouvementProvider extends ChangeNotifier {
               '',
           mouvementType: '',
           storeID: '',
-          senderID: '',
+          // senderID: '',
           // receiverID: '',
           detailsMouvement: []);
       index = 0;
@@ -327,5 +330,59 @@ class MouvementProvider extends ChangeNotifier {
     offlinePricesData = List<PriceModel>.from(
         data.map((item) => PriceModel.fromJSON(item)).toList());
     notifyListeners();
+  }
+
+  addtracking(
+      {required MouvementTrackingModel data,
+      EnumActions? action = EnumActions.SAVE,
+      required Function callback}) async {
+    if (data.sourceDepotId.toString().isEmpty ||
+        data.destDepotId.toString().isEmpty ||
+        data.mouvUuid.toString().isEmpty) {
+      return ToastNotification.showToast(
+          msg: "Veuillez remplir tous les champs",
+          msgType: MessageType.error,
+          title: 'Error');
+    }
+    Map body = data.toJson();
+    body.removeWhere((key, value) => value == null);
+    // print(body);
+    // return;
+    var response = await Provider.of<AppStateProvider>(navKey.currentContext!,
+            listen: false)
+        .httpPost(
+            url: BaseUrl.saveData, body: {"transaction": 'tracking', ...body});
+    // debugPrint(response.body);
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      var decoded = jsonDecode(response.body);
+      if (decoded['state'].toString().toLowerCase() == 'success') {
+        ToastNotification.showToast(
+            msg: "Données enregistrées",
+            msgType: MessageType.success,
+            title: 'Success');
+        callback();
+        notifyListeners();
+        getOnline(isRefresh: true);
+        return;
+      } else {
+        ToastNotification.showToast(
+            msg: decoded['message']?.toString().trim() ??
+                'Une erreur est survenue',
+            msgType: MessageType.error,
+            title: 'Error');
+      }
+    } else if (response.statusCode == 408 || response.statusCode == 500) {
+      ToastNotification.showToast(
+          msg: "Erreur de connexion veuillez réessayer",
+          msgType: MessageType.error,
+          title: 'Error');
+    } else {
+      var decoded = jsonDecode(response.body);
+      ToastNotification.showToast(
+          msg: decoded['message']?.toString().trim() ??
+              "Une erreur est survenue, veuillez contacter l'Administrateur",
+          msgType: MessageType.error,
+          title: 'Error');
+    }
   }
 }

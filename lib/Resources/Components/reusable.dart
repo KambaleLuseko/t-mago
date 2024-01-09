@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+
 import '../../Resources/Components/button.dart';
 import '../../Resources/Components/texts.dart';
 import '../../Resources/Constants/global_variables.dart';
 import '../../Resources/Constants/responsive.dart';
 import '../../main.dart';
-import 'package:flutter/material.dart';
 
 class PageListTitleWidget extends StatelessWidget {
   final Function addCallback, refreshCallback;
@@ -131,7 +132,7 @@ class _TabFilterWidgetState extends State<TabFilterWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       currentFilter = widget.titles[0];
       widget.callback(currentFilter);
     });

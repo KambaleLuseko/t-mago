@@ -1,16 +1,18 @@
+import '../../../Resources/Components/texts.dart';
+import '../../../Resources/Constants/enums.dart';
+import '../../../Resources/Models/store.model.dart';
+import '../../../Resources/Providers/users_provider.dart';
+
+import 'mouvement.widget.dart';
+
 import '../../../Resources/Components/button.dart';
-import '../../../Resources/Components/card.dart';
 import '../../../Resources/Components/dialogs.dart';
 import '../../../Resources/Components/empty_model.dart';
-import '../../../Resources/Components/list_item.dart';
 import '../../../Resources/Components/shimmer_placeholder.dart';
-import '../../../Resources/Components/texts.dart';
 import '../../../Resources/Constants/global_variables.dart';
-import '../../../Resources/Models/Menu/list_item.model.dart';
 import '../../../Resources/Models/mouvement.model.dart';
 import '../../../Resources/Providers/app_state_provider.dart';
 import '../../../Resources/Providers/mouvement.provider.dart';
-import 'tracking.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +40,7 @@ class _SaveSalePageState extends State<OperationScanPage> {
   }
 
   MouvementModel? data;
+  StoreModel? destStore;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +49,14 @@ class _SaveSalePageState extends State<OperationScanPage> {
               widget.operation.toLowerCase().contains('ship'))
           ? null
           : FloatingActionButton(
+              mini: true,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16)),
               backgroundColor: AppColors.kPrimaryColor,
               child: Icon(
                 Icons.nfc_rounded,
                 color: AppColors.kWhiteColor,
-                size: 32,
+                size: 24,
               ),
               onPressed: () async {
                 if (await Permission.camera.status !=
@@ -120,207 +124,266 @@ class _SaveSalePageState extends State<OperationScanPage> {
                               color: AppColors.kGreyColor,
                               text: 'Aucun colis trouvé',
                             )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  ListItem(
-                                    icon: Icons.person,
-                                    title: data.senderName ?? '',
-                                    subtitle: data.senderTel ?? '',
-                                    middleFields: ListItemModel(
-                                        displayLabel: true,
-                                        title: 'Exp',
-                                        value: 'Exp'),
-                                    keepMidleFields: true,
-                                    backColor: AppColors.kWhiteColor,
-                                    textColor: AppColors.kBlackColor,
-                                    detailsFields: const [],
-                                  ),
-                                  ListItem(
-                                    icon: Icons.person,
-                                    title: data.receiverName ?? '',
-                                    subtitle: data.receiverTel ?? '',
-                                    middleFields: ListItemModel(
-                                        displayLabel: true,
-                                        title: 'Dest',
-                                        value: 'Dest'),
-                                    keepMidleFields: true,
-                                    backColor: AppColors.kWhiteColor,
-                                    textColor: AppColors.kBlackColor,
-                                    detailsFields: const [],
-                                  ),
-                                  Card(
-                                    margin: const EdgeInsets.all(8.0),
-                                    elevation: 0,
-                                    // color: AppColors.kScaffoldColor,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 16),
-                                      child: Column(
-                                        children: [
-                                          TrackingWidget.buildTrackWidget(
-                                              title: 'Source',
-                                              subtitle: 'Goma, Himbi',
-                                              color: AppColors.kBlackColor,
-                                              isLast: false,
-                                              date: ''),
-                                          TrackingWidget.buildTrackWidget(
-                                              title: 'Destination',
-                                              subtitle: 'Bukavu, Nyawera',
-                                              color: AppColors.kBlackColor,
-                                              isLast: true,
-                                              date: ''),
-                                          const SizedBox(
-                                            height: 0,
-                                          ),
-                                          TextWidgets.textHorizontalWithLabel(
-                                              title: 'Total à payer',
-                                              fontSize: 16,
-                                              textColor: AppColors.kGreenColor,
-                                              value: data.detailsMouvement
-                                                      .map((e) => double.parse(
-                                                          e.netPrice!))
-                                                      .fold(
-                                                          0.0,
-                                                          (prev, element) =>
-                                                              double.parse(prev
-                                                                  .toString()) +
-                                                              element)
-                                                      .toStringAsFixed(3) +
-                                                  ' USD'),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: TextWidgets.textBold(
-                                      title: 'Contenu',
-                                      fontSize: 16,
-                                      textColor: AppColors.kBlackColor,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  ...List.generate(data.detailsMouvement.length,
-                                      (indexDet) {
-                                    MouvementDetailsModel detData =
-                                        data.detailsMouvement[indexDet];
-                                    return Card(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 8),
-                                      elevation: 0,
-                                      color: AppColors.kWhiteColor,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 24, vertical: 8),
-                                            child: TextWidgets.textBold(
-                                                title: detData.storageType,
-                                                fontSize: 16,
-                                                textColor:
-                                                    AppColors.kBlackColor),
-                                          ),
-                                          ListTile(
-                                            title: Wrap(
-                                              children: [
-                                                TextWidgets.textWithLabel(
-                                                    title: 'Description',
-                                                    value: detData.product,
-                                                    fontSize: 12,
-                                                    textColor:
-                                                        AppColors.kBlackColor),
-                                                TextWidgets.textWithLabel(
-                                                    title: 'Poids',
-                                                    value:
-                                                        "${detData.weights}kg",
-                                                    fontSize: 12,
-                                                    textColor:
-                                                        AppColors.kBlackColor),
-                                                TextWidgets.textWithLabel(
-                                                    title:
-                                                        'Prix total net a payer',
-                                                    value:
-                                                        "${double.parse(detData.netPrice ?? '0').toStringAsFixed(4)} USD",
-                                                    fontSize: 12,
-                                                    textColor:
-                                                        AppColors.kRedColor),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CardWidget(
-                                        elevation: 0,
-                                        title: 'Tracking',
-                                        content: Column(
-                                          children: [
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            ...List.generate(
-                                                data.tracking!.length, (index) {
-                                              MouvementTrackingModel trackData =
-                                                  data.tracking![index];
-                                              return TrackingWidget
-                                                  .buildTrackWidget(
-                                                      date:
-                                                          trackData.createdAt ??
-                                                              '',
-                                                      title: trackData.label ??
-                                                          'Unknown',
-                                                      subtitle:
-                                                          trackData.storeName ??
-                                                              '',
-                                                      color:
-                                                          AppColors.kBlackColor,
-                                                      isLast: data.tracking!
-                                                                  .length ==
-                                                              1
-                                                          ? true
-                                                          : index ==
-                                                                  data.tracking!
-                                                                          .length -
-                                                                      1
-                                                              ? true
-                                                              : false);
-                                            })
-                                          ],
-                                        )),
-                                  )
-                                ]),
+                          : MouvementDetailsPage(data: data),
                     );
                   }),
           if (context.select<MouvementProvider, MouvementModel?>(
                   (provider) => provider.activeOperation) !=
               null)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: CustomButton(
-                  text: 'Enregistrer',
-                  backColor: AppColors.kPrimaryColor,
-                  textColor: AppColors.kWhiteColor,
-                  callback: () {
-                    // context.read<MouvementProvider>().resetOperation();
-                  }),
-            )
+            if (context
+                    .select<MouvementProvider, MouvementModel?>(
+                        (provider) => provider.activeOperation)!
+                    .tracking!
+                    .last
+                    .label
+                    ?.toLowerCase() !=
+                widget.operation.toLowerCase())
+              if (!context
+                      .select<MouvementProvider, MouvementModel?>(
+                          (provider) => provider.activeOperation)!
+                      .tracking!
+                      .last
+                      .label!
+                      .toLowerCase()
+                      .contains('colis re') ||
+                  !widget.operation.toLowerCase().contains('recep'))
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: CustomButton(
+                      text: 'Enregistrer',
+                      backColor: AppColors.kPrimaryColor,
+                      textColor: AppColors.kWhiteColor,
+                      callback: () {
+                        if (!widget.operation.toLowerCase().contains('env')) {
+                          if (widget.operation.toLowerCase().contains('livr') ||
+                              widget.operation.toLowerCase().contains('ship')) {
+                            if (context
+                                    .read<UserProvider>()
+                                    .userLogged
+                                    ?.user
+                                    .refDepot !=
+                                context
+                                    .read<MouvementProvider>()
+                                    .activeOperation
+                                    ?.destination) {
+                              ToastNotification.showToast(
+                                  msg:
+                                      "Vous ne faites pas partie de l'entrepot de destination, de ce fait, vous ne pouvez pas livrer le colis au destinataire",
+                                  msgType: MessageType.error,
+                                  title: 'Erreur');
+                              return;
+                            }
+                            if (!context
+                                .read<MouvementProvider>()
+                                .activeOperation!
+                                .tracking!
+                                .last
+                                .label!
+                                .toLowerCase()
+                                .contains('recept')) {
+                              ToastNotification.showToast(
+                                  msg:
+                                      "Le colis n'a pas encore signalé sa réception à la destination et de ce fait il ne peut pas être livré",
+                                  msgType: MessageType.error,
+                                  title: 'Erreur');
+                              return;
+                            }
+                          }
+                          Dialogs.showDialogWithAction(
+                              title: 'Confirmation',
+                              content:
+                                  "Vous êtes sur le point d'ajouter le statut <<${widget.operation}>> sur le parcours de ce colis.\nVoulez-vous continuer?",
+                              callback: () {
+                                MouvementTrackingModel body =
+                                    MouvementTrackingModel(
+                                        destDepotId: '0',
+                                        sourceDepotId: context
+                                            .read<UserProvider>()
+                                            .userLogged
+                                            ?.user
+                                            .refDepot,
+                                        label: widget.operation.toUpperCase(),
+                                        mouvUuid: context
+                                            .read<MouvementProvider>()
+                                            .activeOperation
+                                            ?.uuid,
+                                        userId: context
+                                            .read<UserProvider>()
+                                            .userLogged
+                                            ?.user
+                                            .id
+                                            ?.toString());
+                                context.read<MouvementProvider>().addtracking(
+                                    data: body,
+                                    callback: () {
+                                      context
+                                          .read<MouvementProvider>()
+                                          .resetOperation();
+                                    });
+                              });
+                          return;
+                        }
+                        Dialogs.showChoiceDialog(
+                            title: 'Choisissez la destination',
+                            content: Container(
+                              padding: const EdgeInsets.all(8),
+                              color: AppColors.kScaffoldColor,
+                              child: Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  ...List.generate(
+                                      context
+                                          .read<MouvementProvider>()
+                                          .offlineStoreData
+                                          .length, (index) {
+                                    StoreModel store = context
+                                        .read<MouvementProvider>()
+                                        .offlineStoreData[index];
+                                    return ActionChip(
+                                        onPressed: () {
+                                          destStore = store;
+                                          setState(() {});
+                                          Navigator.pop(context);
+                                          Dialogs.showDialogWithAction(
+                                              title: 'Confirmation',
+                                              content:
+                                                  "Vous êtes sur le point d'ajouter le statut <<${widget.operation}>> sur le parcours de ce colis.\nVoulez-vous continuer?",
+                                              callback: () {
+                                                MouvementTrackingModel body =
+                                                    MouvementTrackingModel(
+                                                        destDepotId: destStore
+                                                            ?.id
+                                                            ?.toString(),
+                                                        sourceDepotId: context
+                                                            .read<
+                                                                UserProvider>()
+                                                            .userLogged
+                                                            ?.user
+                                                            .refDepot,
+                                                        label: widget.operation
+                                                            .toUpperCase(),
+                                                        mouvUuid: context
+                                                            .read<
+                                                                MouvementProvider>()
+                                                            .activeOperation
+                                                            ?.uuid,
+                                                        userId: context
+                                                            .read<
+                                                                UserProvider>()
+                                                            .userLogged
+                                                            ?.user
+                                                            .id
+                                                            ?.toString());
+                                                context
+                                                    .read<MouvementProvider>()
+                                                    .addtracking(
+                                                        data: body,
+                                                        callback: () {
+                                                          context
+                                                              .read<
+                                                                  MouvementProvider>()
+                                                              .resetOperation();
+                                                        });
+                                              });
+                                        },
+                                        avatar: TextWidgets.textBold(
+                                            title: store.name
+                                                .substring(0, 1)
+                                                .toUpperCase(),
+                                            fontSize: 18,
+                                            textColor: destStore?.id == store.id
+                                                ? AppColors.kWhiteColor
+                                                : AppColors.kBlackColor),
+                                        backgroundColor:
+                                            destStore?.id == store.id
+                                                ? AppColors.kPrimaryColor
+                                                : AppColors.kWhiteColor,
+                                        elevation: 0,
+                                        label: TextWidgets.text300(
+                                          title: store.name,
+                                          fontSize: 12,
+                                          textColor: destStore?.id == store.id
+                                              ? AppColors.kWhiteColor
+                                              : AppColors.kBlackColor,
+                                        ));
+                                  })
+                                ],
+                              ),
+                            ));
+
+                        // context.read<MouvementProvider>().resetOperation();
+                      }),
+                ),
+          if ((context.select<MouvementProvider, MouvementModel?>(
+                      (provider) => provider.activeOperation) !=
+                  null) &&
+              (context
+                          .select<MouvementProvider, MouvementModel?>(
+                              (provider) => provider.activeOperation)!
+                          .tracking!
+                          .last
+                          .label
+                          ?.toLowerCase() ==
+                      widget.operation.toLowerCase() ||
+                  context
+                              .select<MouvementProvider, MouvementModel?>(
+                                  (provider) => provider.activeOperation)!
+                              .tracking!
+                              .length ==
+                          1 &&
+                      widget.operation.toLowerCase().contains('recep')))
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextWidgets.textBold(
+                    title: 'Aucune action disponible',
+                    fontSize: 16,
+                    textColor: AppColors.kRedColor),
+              ),
+            ),
+          if ((context.select<MouvementProvider, MouvementModel?>(
+                  (provider) => provider.activeOperation) !=
+              null))
+            Column(
+              children: [
+                if (context
+                            .select<MouvementProvider, MouvementModel?>(
+                                (provider) => provider.activeOperation)!
+                            .tracking!
+                            .length ==
+                        1 &&
+                    widget.operation.toLowerCase().contains('recep'))
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextWidgets.text300(
+                        title: 'Le colis est déjà reçu',
+                        fontSize: 16,
+                        textColor: AppColors.kRedColor),
+                  ),
+                if (context
+                        .select<MouvementProvider, MouvementModel?>(
+                            (provider) => provider.activeOperation)!
+                        .tracking!
+                        .last
+                        .label
+                        ?.toLowerCase() ==
+                    widget.operation.toLowerCase())
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextWidgets.text300(
+                        align: TextAlign.center,
+                        title:
+                            'Le niveau de progression du colis est identique à l\'opération que vous voulez effectuer',
+                        fontSize: 12,
+                        textColor: AppColors.kRedColor),
+                  ),
+                const SizedBox(
+                  height: 48,
+                )
+              ],
+            ),
         ],
       ),
     );

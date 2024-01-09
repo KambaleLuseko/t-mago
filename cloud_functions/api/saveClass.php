@@ -128,7 +128,7 @@ class Save
                     // }
                     $req = "INSERT INTO `mouvement` (`uuid`, `type_mvt`,`senderID`, `ref_depot`, `ref_mouv_entry`, `ref_user`, `destination`,`receiver_name`,`receiver_phone`,`sender_name`,`sender_phone`) VALUES ('$uuid', '$type_mvt', '$senderID', '$ref_depot', '$ref_mouv_entry', '$ref_user', '$destination', '$receiver_name', '$receiver_phone', '$sender_name', '$sender_phone')";
                     $res = mysqli_query(Constants::connect(), $req);
-                    $reqTrack = "INSERT INTO `mouvement_tracking` (`uuid`, `mouv_uuid`,`user_id`, `source_depot_id`,`dest_depot_id`,`label`) VALUES ('$trackUUID', '$uuid', '$ref_user', '$ref_depot', '$destination', 'Colis reçu')";
+                    $reqTrack = "INSERT INTO `mouvement_tracking` (`uuid`, `mouv_uuid`,`user_id`, `source_depot_id`,`dest_depot_id`,`label`) VALUES ('$trackUUID', '$uuid', '$ref_user', '$ref_depot', '0', 'Colis reçu')";
                     mysqli_query(Constants::connect(), $reqTrack);
                     if ($res) {
                         for ($i = 0; $i < count($detailsMvt); $i++) {

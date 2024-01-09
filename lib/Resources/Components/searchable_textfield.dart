@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'empty_model.dart';
 import '../../Resources/Components/texts.dart';
 import '../../Resources/Constants/global_variables.dart';
+import 'empty_model.dart';
 
 class SearchableTextFormFieldWidget extends StatefulWidget {
   final String hintText;

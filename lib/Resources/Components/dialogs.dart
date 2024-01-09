@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'button.dart';
-import 'texts.dart';
 import '../../Resources/Constants/enums.dart';
 import '../../Resources/Constants/global_variables.dart';
 import '../../Resources/Constants/navigators.dart';
 import '../../Resources/Constants/responsive.dart';
 import '../../main.dart';
+import 'button.dart';
+import 'texts.dart';
 
 class Dialogs {
   static showDialogNoAction(
@@ -227,11 +227,7 @@ class Dialogs {
                                       Navigator.pop(context);
                                     },
                                     text: "Confirmer",
-                                    backColor: dialogType == MessageType.error
-                                        ? AppColors.kRedColor
-                                        : dialogType == MessageType.success
-                                            ? AppColors.kGreenColor
-                                            : AppColors.kWarningColor,
+                                    backColor: AppColors.kPrimaryColor,
                                     textColor: AppColors.kWhiteColor),
                               ),
                             ],
@@ -260,11 +256,7 @@ class Dialogs {
                                 : dialogType == MessageType.success
                                     ? Icons.check_circle
                                     : Icons.warning_amber_rounded,
-                            color: dialogType == MessageType.error
-                                ? AppColors.kRedColor
-                                : dialogType == MessageType.success
-                                    ? AppColors.kGreenColor
-                                    : AppColors.kWarningColor,
+                            color: AppColors.kPrimaryColor,
                             size: 80,
                           ),
                         ),

@@ -34,7 +34,7 @@ if ($_POST['transaction'] == 'getmouvement') {
 
     if (Constants::connect() != null) {
         $userID  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['userID']));
-        $query = "SELECT mouvement.*, depot.designation storeName FROM `mouvement` LEFT JOIN depot ON depot.id=mouvement.ref_depot WHERE mouvement.ref_user='$userID'";
+        $query = "SELECT mouvement.*, depot.designation storeName, depot.adresse_depot storeAddress, destStore.designation destStoreName, destStore.adresse_depot destStoreAddress FROM `mouvement` LEFT JOIN depot ON depot.id=mouvement.ref_depot LEFT JOIN depot destStore ON destStore.id=mouvement.destination WHERE mouvement.ref_user='$userID'";
         // print_r($query);
         $result = Constants::connect()->query($query);
         while ($row = $result->fetch_assoc()) {
@@ -53,14 +53,14 @@ if ($_POST['transaction'] == 'getmouvement') {
             }
 
             // Getting sender data
-            $senderQuery = "SELECT * from `clients` where uuid='$senderID'";
-            $senderResult = Constants::connect()->query($senderQuery);
-            while ($detailRow = $senderResult->fetch_assoc()) {
-                array_push($sender, $detailRow);
-            }
+            // $senderQuery = "SELECT * from `clients` where uuid='$senderID'";
+            // $senderResult = Constants::connect()->query($senderQuery);
+            // while ($detailRow = $senderResult->fetch_assoc()) {
+            //     array_push($sender, $detailRow);
+            // }
 
             // Getting receiver data
-            $trackQuery = "SELECT * from `mouvement_tracking` where mouv_uuid='$id'";
+            $trackQuery = "SELECT mouvement_tracking.*, depot.designation storeName, depot.adresse_depot storeAddress, destStore.designation destStoreName, destStore.adresse_depot destStoreAddress  from `mouvement_tracking` LEFT JOIN depot ON depot.id=mouvement_tracking.source_depot_id  LEFT JOIN depot destStore ON destStore.id=mouvement_tracking.dest_depot_id where mouv_uuid='$id'";
             $trackResult = Constants::connect()->query($trackQuery);
             while ($detailRow = $trackResult->fetch_assoc()) {
                 array_push($tracking, $detailRow);
@@ -78,8 +78,8 @@ if ($_POST['transaction'] == 'getmouvement') {
                 'senderName' => $row['sender_name'],
                 'senderTel' => $row['sender_phone'],
 
-                'sender' => $sender[0] ?? null,
-                'outStock' => $outStockData,
+                // 'sender' => $sender[0] ?? null,
+                // 'outStock' => $outStockData,
                 'detailsMouvement' => $details,
                 'tracking' => $tracking,
             ]);
@@ -95,7 +95,7 @@ if ($_POST['transaction'] == 'searchmouvement') {
 
     if (Constants::connect() != null) {
         $colisID  = trim(mysqli_real_escape_string(Constants::connect(), $_POST['colisID']));
-        $query = "SELECT mouvement.*, depot.designation storeName FROM `mouvement` LEFT JOIN depot ON depot.id=mouvement.ref_depot WHERE mouvement.uuid='$colisID'";
+        $query = "SELECT mouvement.*, depot.designation storeName, depot.adresse_depot storeAddress, destStore.designation destStoreName, destStore.adresse_depot destStoreAddress FROM `mouvement` LEFT JOIN depot ON depot.id=mouvement.ref_depot LEFT JOIN depot destStore ON destStore.id=mouvement.destination WHERE mouvement.uuid='$colisID'";
         // print_r($query);
         $result = Constants::connect()->query($query);
         while ($row = $result->fetch_assoc()) {
@@ -105,7 +105,7 @@ if ($_POST['transaction'] == 'searchmouvement') {
             $tracking = array();
             $id = $row['uuid'];
             $senderID = $row['senderID'];
-            $receiverID = $row['receiverID'];
+            // $receiverID = $row['receiverID'];
             $outStockUUID = $row['ref_mouv_entry'];
             $detQuery = "SELECT * from `detail_mvt` where mouvement_uuid='$id'";
             $detResult = Constants::connect()->query($detQuery);
@@ -114,11 +114,11 @@ if ($_POST['transaction'] == 'searchmouvement') {
             }
 
             // Getting sender data
-            $senderQuery = "SELECT * from `clients` where uuid='$senderID'";
-            $senderResult = Constants::connect()->query($senderQuery);
-            while ($detailRow = $senderResult->fetch_assoc()) {
-                array_push($sender, $detailRow);
-            }
+            // $senderQuery = "SELECT * from `clients` where uuid='$senderID'";
+            // $senderResult = Constants::connect()->query($senderQuery);
+            // while ($detailRow = $senderResult->fetch_assoc()) {
+            //     array_push($sender, $detailRow);
+            // }
 
             // Getting receiver data
             $trackQuery = "SELECT mouvement_tracking.*, depot.designation storeName, depot.adresse_depot storeAddress, destStore.designation destStoreName, destStore.adresse_depot destStoreAddress  from `mouvement_tracking` LEFT JOIN depot ON depot.id=mouvement_tracking.source_depot_id  LEFT JOIN depot destStore ON destStore.id=mouvement_tracking.dest_depot_id where mouv_uuid='$id'";
@@ -131,8 +131,8 @@ if ($_POST['transaction'] == 'searchmouvement') {
                 'senderName' => $row['sender_name'],
                 'senderTel' => $row['sender_phone'],
 
-                'sender' => $sender[0] ?? null,
-                'outStock' => $outStockData,
+                // 'sender' => $sender[0] ?? null,
+                // 'outStock' => $outStockData,
                 'detailsMouvement' => $details,
                 'tracking' => $tracking,
             ]);
