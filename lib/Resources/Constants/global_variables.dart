@@ -41,7 +41,8 @@ class BaseUrl {
   // static String ip = "https://biakuuza.com/api";
   // static String ip = "https://mck-coop-ca.com/api/api";
   // static String ip = "http://192.168.241.22:8000";
-  static String ip = "http://192.168.2.125:8000";
+  static String ip = "http://31.207.35.232/entrepot_api/api";
+  // static String ip = "http://192.168.2.125:8000";
   static String apiUrl = ip;
   static String getLogin = '$apiUrl/user/login/';
   static String user = '$apiUrl/user/';

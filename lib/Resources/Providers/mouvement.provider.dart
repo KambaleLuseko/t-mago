@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../main.dart';
 import '../Constants/app_providers.dart';
 import '../Constants/enums.dart';
 import '../Constants/global_variables.dart';
@@ -9,10 +14,6 @@ import '../Models/mouvement.model.dart';
 import '../Models/store.model.dart';
 import 'app_state_provider.dart';
 import 'users_provider.dart';
-import '../../main.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:collection/collection.dart';
 
 class MouvementProvider extends ChangeNotifier {
   String keyName = 'mouvements',

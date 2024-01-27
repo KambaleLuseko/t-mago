@@ -1,17 +1,17 @@
-import '../../../Resources/Components/card.dart';
-import '../../../Resources/Components/list_item.dart';
-import '../../../Resources/Helpers/date_parser.dart';
-import '../../../Resources/Models/Menu/list_item.model.dart';
-import 'tracking.widget.dart';
+import 'package:flutter/material.dart';
 
 import '../../../Resources/Components/button.dart';
+import '../../../Resources/Components/card.dart';
 import '../../../Resources/Components/dialogs.dart';
+import '../../../Resources/Components/list_item.dart';
 import '../../../Resources/Components/texts.dart';
 import '../../../Resources/Constants/global_variables.dart';
+import '../../../Resources/Helpers/date_parser.dart';
 import '../../../Resources/Helpers/printer.helper.dart';
+import '../../../Resources/Models/Menu/list_item.model.dart';
 import '../../../Resources/Models/cultivator.model.dart';
 import '../../../Resources/Models/mouvement.model.dart';
-import 'package:flutter/material.dart';
+import 'tracking.widget.dart';
 
 class MouvementItemWidget extends StatelessWidget {
   final MouvementModel data;
@@ -410,7 +410,7 @@ class MouvementDetailsPage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: CardWidget(
               elevation: 0,
-              title: 'Tracking',
+              title: 'Trackings',
               content: Column(
                 children: [
                   const SizedBox(

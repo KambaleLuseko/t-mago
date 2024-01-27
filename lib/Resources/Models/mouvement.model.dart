@@ -55,7 +55,6 @@ class MouvementModel {
       this.tracking});
 
   static fromJSON(json) {
-    // print((json['senderName']));
     var detailsMvt = json['detailsMouvement'] is String
         ? jsonDecode(json['detailsMouvement'])
         : json['detailsMouvement'];
@@ -102,7 +101,8 @@ class MouvementModel {
       senderTel: json['senderTel'] ?? '',
       tracking: json['tracking'] is List<MouvementTrackingModel>
           ? json['tracking']
-          : json['tracking'] != null
+          : (json['tracking'] != null && json['tracking'] is List) ||
+                  track != null
               ? List<MouvementTrackingModel>.from(
                   track.map((e) => MouvementTrackingModel.fromJson(e)))
               : [],

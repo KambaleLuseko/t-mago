@@ -291,6 +291,7 @@ class _SaveSalePageState extends State<OperationScanPage> {
                                                       .addtracking(
                                                           data: body,
                                                           callback: () {
+                                                            destStore = null;
                                                             context
                                                                 .read<
                                                                     MouvementProvider>()

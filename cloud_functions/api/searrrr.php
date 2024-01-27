@@ -34,6 +34,7 @@ print_r('\n' . $matriculeClient);
 	GET Transaction
 	<form action="transactions.php" method="POST">
 		<input placeholder="value" type="text" name="value">
+		<input placeholder="userID" type="text" name="userID">
 		<input placeholder="transaction" value="stats" type="text" name="transaction">
 		<input type="submit" value="valider">
 	</form>
